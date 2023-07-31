@@ -7,6 +7,7 @@ from aviva_pensions.services.plumber import Plumber
 from aviva_pensions.parsers.risk_parser import RiskParser
 from aviva_pensions.parsers.risks_parser import RisksParser
 from aviva_pensions.parsers.basic_table_parser import BasicTableParser
+from aviva_pensions.parsers.file_name_parser import FileNameParser
 
 class Container(containers.DeclarativeContainer):
     
@@ -25,6 +26,10 @@ class Container(containers.DeclarativeContainer):
         BasicTableParser
     )
     
+    file_name_parser = providers.Factory(
+        FileNameParser
+    )
+    
     char_stream_parsers=providers.List(
         risk_parser
     )
@@ -41,7 +46,8 @@ class Container(containers.DeclarativeContainer):
         Plumber,
         char_stream_parsers = char_stream_parsers,
         text_parsers = text_parsers,
-        table_parsers = table_parsers
+        table_parsers = table_parsers,
+        file_name_parser = file_name_parser
     )
     
     pdf_reporter = providers.Singleton(

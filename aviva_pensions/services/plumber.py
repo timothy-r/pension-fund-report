@@ -1,4 +1,5 @@
 # from typing import Dict
+from aviva_pensions.parsers.file_name_parser import FileNameParser
 
 
 class Plumber:
@@ -7,12 +8,14 @@ class Plumber:
         self, 
         char_stream_parsers:list, 
         text_parsers:list,
-        table_parsers: list
+        table_parsers: list,
+        file_name_parser: FileNameParser
     ) -> None:
         
         self._char_stream_parsers = char_stream_parsers
         self._text_parsers = text_parsers
         self._table_parsers = table_parsers
+        self._file_name_parser = file_name_parser
         
     """ 
         class to extract table data as key values from PDF pages
@@ -27,7 +30,7 @@ class Plumber:
     
     def get_data(self):
         
-        results = {"Name": self._file_name}
+        results = { "Name": self._file_name_parser.parse_name(self._file_name)}
         
         for parser in self._table_parsers:
             results |= parser.get_values()
