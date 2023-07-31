@@ -13,7 +13,7 @@ class RiskParser(CharStreamParserInterface):
         self._done = False
         
     # extract the char sequence 1-7
-    def add_char(self, char:dict):
+    def add_char(self, char:dict) -> None:
         
         if self._done:
             return
@@ -30,15 +30,15 @@ class RiskParser(CharStreamParserInterface):
     def get_chars(self):
         return self._chars
 
-    def get_name(self):
+    def get_name(self) -> str:
         return 'risk'
 
-    def get_value(self):
+    def get_values(self) -> dict:
         if not self._done:
             return None
 
         for char in self._chars:
             if char['stroking_color'] == (0, 0, 0) and char['non_stroking_color'] == (0, 0, 0):
-                return char['text']
+                return {self.get_name(): char['text']}
         
         

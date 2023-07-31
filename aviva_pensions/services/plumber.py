@@ -36,10 +36,10 @@ class Plumber:
             results |= parser.get_values()
         
         for parser in self._char_stream_parsers:
-            results[parser.get_name()] = parser.get_value()
+            results |= parser.get_values()
         
         for parser in self._text_parsers:
-            results |= parser.get_value(self._text)
+            results |= parser.get_values(self._text)
             
         return results
     
@@ -59,7 +59,7 @@ class Plumber:
         text = []
         for char in page.chars:
             text.append(char['text'])
-            # extract risk number
+
             for parser in self._char_stream_parsers:
                 parser.add_char(char=char)
         
@@ -78,5 +78,6 @@ class Plumber:
         for t in range(0, total_tables-1):
             # for table in [0,1,2]:
             # print("table: {}".format(t))
+            
             for parser in self._table_parsers:
-                parser.read_table(page_tables[t])
+                parser.read_table(t+1, page_tables[t])

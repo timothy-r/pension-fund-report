@@ -3,9 +3,9 @@ import abc
 class TextParserInterface:
     
     @abc.abstractmethod
-    def get_name(self):
+    def get_name(self) -> str:
         pass
     
     @abc.abstractmethod
-    def get_value(self, text:str):
+    def get_values(self, text:str) -> dict:
         pass

@@ -7,6 +7,7 @@ class RisksParser(TextParserInterface):
     def __init__(self) -> None:
         super().__init__()
         
+        # // config these names
         self._risk_names = [
             "General",
             "Foreign Exchange Risk",
@@ -20,10 +21,10 @@ class RisksParser(TextParserInterface):
             "Reinsured Funds"
         ]
         
-    def get_name(self):
+    def get_name(self) -> str:
         return 'risks'
 
-    def get_value(self, text: str):
+    def get_values(self, text: str) -> dict:
 
         values = {}
         

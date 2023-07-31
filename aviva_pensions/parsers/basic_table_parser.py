@@ -12,7 +12,7 @@ class BasicTableParser(TableParserInterface):
     def get_values(self) -> dict:
         return self._data
     
-    def read_table(self, table) -> None:
+    def read_table(self, num, table) -> None:
         
         data = {}        
         for row in table:
