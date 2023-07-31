@@ -1,0 +1,21 @@
+* Design plugin classes that are injected into the plumber class 
+* Implement dependency injection
+
+
+* call with each character in the pdf
+
+CharStreamParserInterface
+
+    * add_char(char)
+    * get_name() <- the report name (column name)
+    * get_value()
+
+* call with the whole text of the pdf
+
+TextParserInterface
+
+    * get_value(text)
+    * get_name() <- the report name
+
+
+{'Fund Size', 'Launch date', 'Sector Ga': 'Equities', 'External fund holdings', 'SEDOL', 'Fund Manager', 'ISIN Code', 'risk', 'General', 'Foreign Exchange Risk', 'Emerging Markets', 'Smaller Companies', 'Fixed Interest'', 'Derivatives', 'Cash/Money Market Funds', 'Property Funds', 'High Yield Bonds', 'Reinsured Funds'}, {'Fund Size': '£3409.05m', 'Launch date': '10/09/1999', 'Sector Md Isn 45': 'Shares', 'Benchmark SA +': '(Lagged)', 'External fund holdings': 'Yes', 'SEDOL': 'B00H4G4', 'UK TRE BIL 0% 11/12/2023': '3.0%', 'United Kingdom Treasury Bill': '1.1%', 'US TRY 1.125% IL 01/33': '2.0%', 'MICROSOFT CORP': '2.0%', 'APPLE': '1.3%', 'ALPHABET INC': '0.9%', 'ASTRAZENECA': '0.9%', 'SHELL': '0.7%', '1% Treasury Gilt 2024': '0.6%', '': '', 'risk': '4', 'General': 'Yes', 'Foreign Exchange Risk': 'Yes', 'Emerging Markets': 'Yes', 'Smaller Companies': 'Yes', 'Fixed Interest': 'Yes', 'Derivatives': 'No', 'Cash/Money Market Funds': 'No', 'Property Funds': 'Yes', 'High Yield Bonds': 'No', 'Reinsured Funds': 'No'}]
