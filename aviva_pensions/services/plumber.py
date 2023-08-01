@@ -1,14 +1,15 @@
-# from typing import Dict
 from aviva_pensions.parsers.file_name_parser import FileNameParser
-
+from aviva_pensions.parsers.char_stream_parser_interface import CharStreamParserInterface
+from aviva_pensions.parsers.text_parser_interface import TextParserInterface
+from aviva_pensions.parsers.table_parser_interface import TableParserInterface
 
 class Plumber:
     
     def __init__(
         self, 
-        char_stream_parsers:list, 
-        text_parsers:list,
-        table_parsers: list,
+        char_stream_parsers:list[CharStreamParserInterface], 
+        text_parsers:list[TextParserInterface],
+        table_parsers: list[TableParserInterface],
         file_name_parser: FileNameParser
     ) -> None:
         
@@ -29,7 +30,7 @@ class Plumber:
         self._num_tables = 0
         
         # parse table data
-        self._parsePages()
+        self._parse_pages()
     
     def get_data(self):
         
@@ -46,7 +47,7 @@ class Plumber:
             
         return results
     
-    def _parsePages(self) -> None:
+    def _parse_pages(self) -> None:
         total_pages = len(self._pdf.pages)
         # print("pages: {}".format(total_pages))
         
@@ -55,10 +56,10 @@ class Plumber:
             
             page = self._pdf.pages[p]
             
-            self._parsePageTables(page)
-            self._text += self._parsePageText(page)
+            self._parse_page_tables(page)
+            self._text += self._parse_page_text(page)
             
-    def _parsePageText(self, page) -> None:
+    def _parse_page_text(self, page) -> None:
         text = []
         for char in page.chars:
             text.append(char['text'])
@@ -69,7 +70,7 @@ class Plumber:
         return ''.join(text)
         
             
-    def _parsePageTables(self, page) -> None:
+    def _parse_page_tables(self, page) -> None:
         
         page_tables = page.extract_tables(
             table_settings = { } 
@@ -79,11 +80,9 @@ class Plumber:
         # print("tables: {}".format(total_tables))
         
         for t in range(0, total_tables-1):
-            # for table in [0,1,2]:
-            print("table: {}".format(page_tables[t]))
+            # print("table: {}".format(page_tables[t]))
             
             self._num_tables += 1
             
             for parser in self._table_parsers:
-                
                 parser.read_table(self._num_tables, page_tables[t])
