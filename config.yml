@@ -1,0 +1,7 @@
+post_processor:
+  add_columns:
+    file: "./input/aviva_pension_input.csv"
+    columns:
+      - Charge
+      - FT ratings
+      - MS ratings

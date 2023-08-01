@@ -2,6 +2,10 @@ import csv
 
 from aviva_pensions.processors.post_processor_interface import PostProcessorInterface
 
+"""
+    Add columns from another csv to the report
+    Support falling back to a different key or fix the SEDOL lookup?
+"""
 class AddColumnsPostProcessor(PostProcessorInterface):
     
     def __init__(self, columns:list[str], file:str) -> None:
@@ -46,5 +50,7 @@ class AddColumnsPostProcessor(PostProcessorInterface):
             csv_reader = csv.DictReader(csv_file, delimiter=',')
             for row in csv_reader:
                 if self._key in row:
-                    self._data[row[self._key]] = row 
+                    self._data[row[self._key]] = row
+                else:
+                    print(row)
             
