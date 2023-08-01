@@ -17,9 +17,11 @@ def main(
     # read all pdfs from directory
     results = pdf_extractor.read_directory(dir)
     
-    # post-process results, then write the report
+    # post-process results - generate insights
     
-    # print out extracted data from each pdf
+    # filter data into format for writing the report
+    
+    # print out the report
     report_writer.write_data(outfile=outfile, data=results)
     
 if __name__ == "__main__":
