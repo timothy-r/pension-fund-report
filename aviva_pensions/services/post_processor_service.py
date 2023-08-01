@@ -8,13 +8,18 @@ class PostProcessorService:
     def __init__(self, post_processors:list[PostProcessorInterface]) -> None:
         self._post_processors = post_processors
     
-    def process(self, data:dict) -> dict:
+    def process(self, data:list) -> list:
+        
+        results = []
         
         # result = data
-        for p in self._post_processors:
-            print(p)
-            data = p.process(data=data)
+        for item in data:
+            
+            for p in self._post_processors:
+                item = p.process(data=item)
+            
+            results.append(item)
         
-        return data
+        return results
     
     

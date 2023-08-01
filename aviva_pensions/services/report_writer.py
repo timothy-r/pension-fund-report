@@ -4,7 +4,7 @@ class ReportWriter:
     
     def __init__(self) -> None:
          # // configure output
-        self._fieldnames = ['Name', 'Fund Size', 'Launch date', 'Sector Ga', 'Equities', 'External fund holdings', 'SEDOL', 'Fund Manager', 'ISIN Code', 'risk', 'General', 'Foreign Exchange Risk', 'Emerging Markets', 'Smaller Companies', 'Fixed Interest', 'Derivatives', 'Cash/Money Market Funds', 'Property Funds', 'High Yield Bonds', 'Reinsured Funds']
+        self._fieldnames = ['Name', 'Fund Size', 'Launch date', 'Sector Ga', 'Equities', 'External fund holdings', 'SEDOL', 'Fund Manager', 'ISIN Code', 'risk', 'fund_to_benchmark_ave', 'fund_to_sector_ave',  'General', 'Foreign Exchange Risk', 'Emerging Markets', 'Smaller Companies', 'Fixed Interest', 'Derivatives', 'Cash/Money Market Funds', 'Property Funds', 'High Yield Bonds', 'Reinsured Funds']
     
     
     def write_data(self, outfile:str, data:list) -> None:

@@ -21,6 +21,8 @@ def main(
     # post-process results - generate insights
     results = post_processor.process(results)
     
+    # print(results)
+   
     # filter data into format for writing the report
     
     # print out the report
