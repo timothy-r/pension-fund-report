@@ -38,7 +38,10 @@ class Plumber:
     
     def get_data(self):
         
-        results = { "Name": self._file_name_parser.parse_name(self._file_name)}
+        results = { 
+            "Name": self._file_name_parser.parse_name(self._file_name),
+            "FileName": self._file_name
+        }
         
         for parser in self._table_parsers:
             results |= parser.get_values()
