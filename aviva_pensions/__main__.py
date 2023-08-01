@@ -4,18 +4,18 @@ from dependency_injector.wiring import Provide, inject
 
 from aviva_pensions.container import Container
 
-from aviva_pensions.services.pdf_reporter import PDFReporter
+from aviva_pensions.services.pdf_extractor_service import PDFExtractorService
 
 @inject
 def main(
     dir:str, 
     outfile:str,
-    pdf_reporter: PDFReporter = Provide[Container.pdf_reporter]
+    pdf_extractor: PDFExtractorService = Provide[Container.pdf_extractor_service]
 ) -> None:
     
     # read all pdfs from directory
     # print out extracted data from each pdf
-    results = pdf_reporter.read_directory(dir)
+    results = pdf_extractor.read_directory(dir)
     
     # print(results)
     

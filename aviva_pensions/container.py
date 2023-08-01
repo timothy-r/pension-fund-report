@@ -1,7 +1,7 @@
 from dependency_injector import containers, providers
 
 
-from aviva_pensions.services.pdf_reporter import PDFReporter
+from aviva_pensions.services.pdf_extractor_service import PDFExtractorService
 from aviva_pensions.services.plumber import Plumber
 
 from aviva_pensions.parsers.risk_parser import RiskParser
@@ -65,8 +65,8 @@ class Container(containers.DeclarativeContainer):
         file_name_parser = file_name_parser
     )
     
-    pdf_reporter = providers.Singleton(
-        PDFReporter,
+    pdf_extractor_service = providers.Singleton(
+        PDFExtractorService,
         plumber.provider
     )
     

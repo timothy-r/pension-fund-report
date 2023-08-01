@@ -4,7 +4,7 @@ from typing import Callable, List
 
 from aviva_pensions.services.plumber import Plumber
 
-class PDFReporter:
+class PDFExtractorService:
     
     def __init__(self, plumber_factory:Callable[..., Plumber]) -> None:
         self._plumber_factory = plumber_factory
