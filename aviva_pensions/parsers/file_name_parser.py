@@ -9,7 +9,6 @@ class FileNameParser:
         
         if name.startswith('Aviva_Pension_h-FL_'):
             items = re.search('Aviva_Pension_h-FL_(.*)', name)
-            # name = name.lstrip('Aviva_Pension_h-FL_')
             name = items.group(1)
         
         if name.endswith('.pdf'):

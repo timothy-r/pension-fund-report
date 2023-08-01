@@ -35,7 +35,7 @@ class RiskParser(CharStreamParserInterface):
 
     def get_values(self) -> dict:
         if not self._done:
-            return None
+            return {self.get_name(): ''}
 
         for char in self._chars:
             if char['stroking_color'] == (0, 0, 0) and char['non_stroking_color'] == (0, 0, 0):

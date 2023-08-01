@@ -43,8 +43,6 @@ class Container(containers.DeclarativeContainer):
         table_cell_label_parser
     )
     
-
-    
     char_stream_parsers=providers.List(
         risk_parser
     )
