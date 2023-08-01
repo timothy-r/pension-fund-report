@@ -4,13 +4,14 @@ from dependency_injector.wiring import Provide, inject
 from aviva_pensions.container import Container
 from aviva_pensions.services.pdf_extractor_service import PDFExtractorService
 from aviva_pensions.services.report_writer import ReportWriter
-
+from aviva_pensions.services.post_processor_service import PostProcessorService
 
 @inject
 def main(
     dir:str, 
     outfile:str,
     pdf_extractor: PDFExtractorService = Provide[Container.pdf_extractor_service],
+    post_processor: PostProcessorService = Provide[Container.post_processor_service],
     report_writer: ReportWriter = Provide[Container.report_writer]
 ) -> None:
     
@@ -18,6 +19,7 @@ def main(
     results = pdf_extractor.read_directory(dir)
     
     # post-process results - generate insights
+    results = post_processor.process(results)
     
     # filter data into format for writing the report
     

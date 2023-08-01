@@ -1,4 +1,5 @@
 from aviva_pensions.parsers.table_parser_interface import TableParserInterface
+from aviva_pensions.parsers.performance_matrix import PerformanceMatrix
 
 class PerformanceTableParser(TableParserInterface):
     
@@ -11,8 +12,8 @@ class PerformanceTableParser(TableParserInterface):
         return 'performance'
     
     def get_values(self) -> dict:
-        print(self._data)
-        return {self.get_name() : self._data}
+        # print(self._data)
+        return { self.get_name() : PerformanceMatrix(self._data) }
     
     def read_table(self, num, table) -> None:
         # return a dict of dicts
