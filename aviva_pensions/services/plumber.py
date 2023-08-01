@@ -82,6 +82,8 @@ class Plumber:
             # for table in [0,1,2]:
             print("table: {}".format(page_tables[t]))
             
+            self._num_tables += 1
+            
             for parser in self._table_parsers:
-                self._num_tables += 1
+                
                 parser.read_table(self._num_tables, page_tables[t])

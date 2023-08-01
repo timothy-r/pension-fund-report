@@ -19,8 +19,7 @@ def main(
     
     # print(results)
     
-    # fieldnames = results[0].keys()
-    
+    # // configure output    
     fieldnames = ['Name', 'Fund Size', 'Launch date', 'Sector Ga', 'Equities', 'External fund holdings', 'SEDOL', 'Fund Manager', 'ISIN Code', 'risk', 'General', 'Foreign Exchange Risk', 'Emerging Markets', 'Smaller Companies', 'Fixed Interest', 'Derivatives', 'Cash/Money Market Funds', 'Property Funds', 'High Yield Bonds', 'Reinsured Funds']
     
     with open(outfile, 'w', newline='') as csv_outfile:

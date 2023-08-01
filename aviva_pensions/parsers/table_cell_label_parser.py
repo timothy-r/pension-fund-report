@@ -2,12 +2,6 @@ class TableCellLabelParser:
     
     def parse_label(self, label) -> str:
         
-        print(label)
-        
-        # cell = row[0].split()
-        # label = ' '.join(cell[:-1])
-        # label = ' '.join(cell)
-                
         words = label.split()
         
         result = []
