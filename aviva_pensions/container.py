@@ -3,6 +3,7 @@ from dependency_injector import containers, providers
 
 from aviva_pensions.services.pdf_extractor_service import PDFExtractorService
 from aviva_pensions.services.plumber import Plumber
+from aviva_pensions.services.report_writer import ReportWriter
 
 from aviva_pensions.parsers.risk_parser import RiskParser
 from aviva_pensions.parsers.risks_parser import RisksParser
@@ -63,6 +64,10 @@ class Container(containers.DeclarativeContainer):
         text_parsers = text_parsers,
         table_parsers = table_parsers,
         file_name_parser = file_name_parser
+    )
+    
+    report_writer = providers.Singleton(
+        ReportWriter
     )
     
     pdf_extractor_service = providers.Singleton(

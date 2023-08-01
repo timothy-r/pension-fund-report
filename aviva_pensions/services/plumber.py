@@ -3,6 +3,10 @@ from aviva_pensions.parsers.char_stream_parser_interface import CharStreamParser
 from aviva_pensions.parsers.text_parser_interface import TextParserInterface
 from aviva_pensions.parsers.table_parser_interface import TableParserInterface
 
+"""
+    Orchestrates reading data from a PDF
+    Calls its configured parsers to read the data
+"""
 class Plumber:
     
     def __init__(
