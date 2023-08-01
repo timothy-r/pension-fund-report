@@ -17,12 +17,22 @@ class PerformanceMatrix:
         if it is below the benchmark in every year then the value == 0
     """
     def fund_to_benchmark_average(self) -> float:
-        fund_row = self._data[self._keys['fund']]
-        bench_mark_row = self._data[self._keys['benchmark']]
-        total = 0.0
-        for k in fund_row.keys():
-            total += 1.0 if float(fund_row[k]) - float(bench_mark_row[k]) > 0 else 0
-        
-        return total / float(len(fund_row))
+        return self._calculate_average('fund','benchmark')
     
+    def fund_to_sector_average(self) -> float:
+        return self._calculate_average('fund','sector_ave')
+
+    def _calculate_average(self, from_key:str, to_key:str) -> float:
+        
+        if self._keys[from_key] in self._data and self._keys[to_key] in self._data:
             
+            from_row = self._data[self._keys[from_key]]
+            to_row = self._data[self._keys[to_key]]
+            
+            total = 0.0
+            for k in from_row.keys():
+                total += 1.0 if float(from_row[k]) - float(to_row[k]) > 0 else 0
+            
+            return total / float(len(from_row))
+        else:
+            return None

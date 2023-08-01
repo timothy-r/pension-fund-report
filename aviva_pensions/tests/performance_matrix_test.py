@@ -72,7 +72,52 @@ class PerformanceMatrixTest(unittest.TestCase):
         
         self.assertEquals(0.6, result)
     
-     
+    def test_fund_to_benchmark_average_fund_validates_data(self):
+        matrix = PerformanceMatrix({})
+        result = matrix.fund_to_benchmark_average()
+        
+        self.assertEquals(None, result)
+    
+    def test_fund_to_sector_average_validates_data(self):
+        matrix = PerformanceMatrix({})
+        result = matrix.fund_to_benchmark_average()
+        
+        self.assertEquals(None, result)
+
+    def test_fund_to_sector_average_fund_higher(self):
+        data = self._get_test_matrix({
+            'fund': ['12.94', '9.62','19.01','5.91','8.77'],
+            'sector': ['10.05', '4.12','1.99','3.01','1.03']
+        })
+        
+        matrix = PerformanceMatrix(data)
+        result = matrix.fund_to_sector_average()
+        
+        self.assertEquals(1, result)
+
+    def test_fund_to_sector_average_fund_lower(self):
+        data = self._get_test_matrix({
+            'fund': ['10.05', '4.12','1.99','3.01','1.03'],
+            'sector': ['12.94', '9.62','19.01','5.91','8.77']
+        })
+        
+        matrix = PerformanceMatrix(data)
+        result = matrix.fund_to_sector_average()
+        
+        self.assertEquals(0, result)
+
+    def test_fund_to_sector_average_fund_20_percent(self):
+        data = self._get_test_matrix({
+            'fund': ['10.05', '14.12','1.99','3.01','1.03'],
+            'sector': ['12.94', '9.62','19.01','5.91','8.77']
+        })
+        
+        matrix = PerformanceMatrix(data)
+        result = matrix.fund_to_sector_average()
+        
+        self.assertEquals(0.2, result)
+
+
     def _get_test_matrix(self, data:dict):
         keys = {'fund':'Fund (%)','benchmark':'Bench- mark (%)','sector':'Sector Average (%)','quartile':'Quartile rank within sector'}
         
