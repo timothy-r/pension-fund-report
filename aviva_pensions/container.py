@@ -14,10 +14,11 @@ from aviva_pensions.parsers.performance_table_parser import PerformanceTablePars
 from aviva_pensions.parsers.table_cell_label_parser import TableCellLabelParser
 
 from aviva_pensions.processors.performance_post_processor import PerformancePostProcessor
+from aviva_pensions.processors.add_columns_post_processor import AddColumnsPostProcessor
 
 class Container(containers.DeclarativeContainer):
     
-    config = providers.Configuration()
+    config = providers.Configuration(yaml_files=["./config.yml"])
     
     table_cell_label_parser = providers.Factory(
         TableCellLabelParser
@@ -50,6 +51,12 @@ class Container(containers.DeclarativeContainer):
         PerformancePostProcessor
     )
     
+    add_cols_post_processor = providers.Factory(
+        AddColumnsPostProcessor,
+        config.post_processor.add_columns.columns,
+        config.post_processor.add_columns.file
+    )
+    
     char_stream_parsers=providers.List(
         risk_parser
     )
@@ -64,7 +71,8 @@ class Container(containers.DeclarativeContainer):
     )
     
     post_processors = providers.List(
-        perf_post_processor
+        perf_post_processor,
+        add_cols_post_processor
     )
     
     plumber = providers.Factory(

@@ -15,7 +15,7 @@ class BasicTableParser(TableParserInterface):
     
     def read_table(self, num, table) -> None:
         
-        print("read_table: num {}".format(num))
+        # print("read_table: num {}".format(num))
         
         data = {}
         row_num = 0
@@ -23,7 +23,7 @@ class BasicTableParser(TableParserInterface):
         for row in table:
             # print(row)
             row_num += 1
-            print("read_table : row.num {} row.len {}".format(row_num, len(row)))
+            # print("read_table : row.num {} row.len {}".format(row_num, len(row)))
             
             # each row should have only 1 cell
             # split cells, use last word as the value 
@@ -41,7 +41,7 @@ class BasicTableParser(TableParserInterface):
                     except IndexError:
                         data[label] = ''
                     
-                    print("read_table : '{}'='{}'".format(label, data[label]))
+                    # print("read_table : '{}'='{}'".format(label, data[label]))
             # elif len(row) == 2:
             #     data[row[0]] = row[1]
             #     print("read_table : '{}'='{}'".format(row[0], data[row[0]]))

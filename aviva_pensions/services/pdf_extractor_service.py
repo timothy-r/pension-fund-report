@@ -23,10 +23,14 @@ class PDFExtractorService:
         return results
     
     def _read_pdf(self, file):
+        # only read
         
-        with pdfplumber.open(file) as pdf:
-            # create a new instance of the plumber each time
-            plumber = self._plumber_factory()
-            plumber.read(file_name=file, pdf= pdf)
-            
-            return plumber.get_data()
+        try:
+            with pdfplumber.open(file) as pdf:
+                # create a new instance of the plumber each time
+                plumber = self._plumber_factory()
+                plumber.read(file_name=file, pdf= pdf)
+                
+                return plumber.get_data()
+        except:
+            print("Cannot read pdf: {}".format(file))

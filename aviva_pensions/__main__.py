@@ -21,16 +21,13 @@ def main(
     # post-process results - generate insights
     results = post_processor.process(results)
     
-    # print(results)
-   
-    # filter data into format for writing the report
-    
     # print out the report
     report_writer.write_data(outfile=outfile, data=results)
     
 if __name__ == "__main__":
     
     container = Container()
+    
     container.init_resources()
     container.wire(modules=[__name__])
 
