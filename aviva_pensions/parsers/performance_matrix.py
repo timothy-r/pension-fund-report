@@ -31,8 +31,11 @@ class PerformanceMatrix:
             
             total = 0.0
             for k in from_row.keys():
-                total += 1.0 if float(from_row[k]) - float(to_row[k]) > 0 else 0
-            
+                try:
+                    total += 1.0 if float(from_row[k]) - float(to_row[k]) > 0 else 0
+                except ValueError:
+                    pass
+                
             return total / float(len(from_row))
         else:
             return None
