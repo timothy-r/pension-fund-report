@@ -1,6 +1,7 @@
 import unittest
 
 from aviva_pensions.processors.add_columns_post_processor import AddColumnsPostProcessor
+from aviva_pensions.readers.list_to_dict_data_provider import ListToDictDataProvider
 
 class AddColumnsPostProcessorTest(unittest.TestCase):
     
@@ -15,7 +16,8 @@ class AddColumnsPostProcessorTest(unittest.TestCase):
             {'SEDOL':'B7M1101', 'Charge':'0.20%', 'MS ratings':'5', 'FT ratings':'2'}
         ]
         
-        self._processor = AddColumnsPostProcessor(key=key, columns=cols,reader=data)
+        data_provider = ListToDictDataProvider(key=key, reader=data)
+        self._processor = AddColumnsPostProcessor(key=key, columns=cols,data_provider=data_provider)
         
         row = {'SEDOL':'B5M9Z37'}
         results = self._processor.process(row=row)
@@ -34,7 +36,9 @@ class AddColumnsPostProcessorTest(unittest.TestCase):
             {'SEDOL':'3349036', 'Charge':'0.20%', 'MS ratings':'5', 'FT ratings':'2'}
         ]
         
-        self._processor = AddColumnsPostProcessor(key=key, columns=cols,reader=data)
+        data_provider = ListToDictDataProvider(key=key, reader=data)
+                
+        self._processor = AddColumnsPostProcessor(key=key, columns=cols,data_provider=data_provider)
         
         row = {'SEDOL':'03346251'}
         results = self._processor.process(row=row)
