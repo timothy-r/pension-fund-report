@@ -1,7 +1,10 @@
 post_processor:
   add_columns:
     file: "./input/aviva_pension_input.csv"
+    encoding: "utf-8"
+    delim: ","
     columns:
       - Charge
       - FT ratings
       - MS ratings
+    key: "SEDOL"

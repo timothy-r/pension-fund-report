@@ -16,7 +16,7 @@ class PostProcessorService:
         for item in data:
             
             for p in self._post_processors:
-                item = p.process(data=item)
+                item = p.process(row=item)
             
             results.append(item)
         

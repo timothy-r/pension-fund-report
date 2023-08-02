@@ -6,5 +6,5 @@ import abc
 class PostProcessorInterface():
     
     @abc.abstractmethod
-    def process(self, data:dict) -> dict:
+    def process(self, row:dict) -> dict:
         pass

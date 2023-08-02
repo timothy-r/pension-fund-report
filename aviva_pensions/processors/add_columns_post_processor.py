@@ -8,50 +8,52 @@ from aviva_pensions.processors.post_processor_interface import PostProcessorInte
 """
 class AddColumnsPostProcessor(PostProcessorInterface):
     
-    def __init__(self, columns:list[str], file:str) -> None:
+    def __init__(self, key:str, columns:list[str], reader) -> None:
         self._columns = columns
-        self._file = file
-        self._data = {}
-        self._key = 'SEDOL'
+        self._reader = reader
+        self._source_data = {}
+        self._key_name = key
         
     """
         add named columns from source csv to the data
         keyed on sedol
     """
-    def process(self, data: dict) -> dict:
+    def process(self, row: dict) -> dict:
         
-        if not len(self._data):
+        if not len(self._source_data):
             self._read_data()
         
         # if the key is not in the input then add empty columns        
-        if not self._key in data:
-            print("key {} not found in {}".format(self._key, data))
+        if not self._key_name in row:
+            print("key {} not found in {}".format(self._key_name, row))
             for col in self._columns:
-                data[col] = ''
-            return data
+                row[col] = ''
+            return row
         
-        # get the key to read from the data source 
-        key = data[self._key]
+        # get the id to read from the data source 
+        id = str(row[self._key_name])
         
-        if key in self._data:
+        if id in self._source_data:
             
-            row = self._data[key]
+            data_row = self._source_data[id]
             
             for col in self._columns:
-                if col in row:
-                    data[col] = row[col]
+                if col in data_row:
+                    row[col] = data_row[col]
                 else:
-                    data[col] = ''
-        
-        return data
+                    row[col] = ''
+        else:
+            print("id {} not found in {}".format(id, row))
+            
+        return row
     
     def _read_data(self):
-        self._data = {}
-        with open(self._file) as csv_file:
-            csv_reader = csv.DictReader(csv_file, delimiter=',')
-            for row in csv_reader:
-                if self._key in row:
-                    self._data[row[self._key]] = row
-                else:
-                    print(row)
+        
+        self._source_data = {}
+        
+        for row in self._reader:
+            if self._key_name in row:
+                self._source_data[str(row[self._key_name])] = row
+            else:
+                print(row)
             

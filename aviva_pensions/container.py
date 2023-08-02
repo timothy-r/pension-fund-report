@@ -16,6 +16,7 @@ from aviva_pensions.parsers.table_cell_label_parser import TableCellLabelParser
 from aviva_pensions.processors.performance_post_processor import PerformancePostProcessor
 from aviva_pensions.processors.add_columns_post_processor import AddColumnsPostProcessor
 
+from aviva_pensions.readers.csv_dict_reader import CSVDictReader
 class Container(containers.DeclarativeContainer):
     
     config = providers.Configuration(yaml_files=["./config.yml"])
@@ -51,10 +52,18 @@ class Container(containers.DeclarativeContainer):
         PerformancePostProcessor
     )
     
+    add_columns_reader = providers.Factory(
+        CSVDictReader,
+        config.post_processor.add_columns.file,
+        config.post_processor.add_columns.delim,
+        config.post_processor.add_columns.encoding
+    )
+    
     add_cols_post_processor = providers.Factory(
         AddColumnsPostProcessor,
+        config.post_processor.add_columns.key,
         config.post_processor.add_columns.columns,
-        config.post_processor.add_columns.file
+        add_columns_reader
     )
     
     char_stream_parsers=providers.List(
