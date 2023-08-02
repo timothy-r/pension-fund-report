@@ -2,18 +2,18 @@ import re
 
 from aviva_pensions.processors.post_processor_interface import PostProcessorInterface
 from aviva_pensions.parsers.name_parser import NameParser
+from aviva_pensions.readers.data_provider_interface import DataProviderInterface
 
 """
     insert prices into the data, if not already set
 """
 class AddPricesChargesPostProcessor(PostProcessorInterface):
     
-    def __init__(self, key:str, columns:list[str], reader, name_parser:NameParser) -> None:
+    def __init__(self, key:str, columns:list[str], data_provider:DataProviderInterface) -> None:
         super().__init__()
         self._key_name = key
         self._columns = columns
-        self._reader = reader
-        self._name_parser = name_parser
+        self._data_provider = data_provider
         self._source_data = {}
     
     """
@@ -23,7 +23,7 @@ class AddPricesChargesPostProcessor(PostProcessorInterface):
     def process(self, row: dict) -> dict:
         
         if not len(self._source_data):
-            self._read_data()
+            self._source_data = self._data_provider.read_data()
         
         if not self._key_name in row:
             print("key {} not found in {}".format(self._key_name, row))
@@ -54,18 +54,3 @@ class AddPricesChargesPostProcessor(PostProcessorInterface):
         
         return row
     
-    def _read_data(self):
-        self._source_data = {}
-        
-        # remove leading Av and trailing FP
-        for row in self._reader:
-            # spilt first column into name & charge
-            fund_name = row['Fund name']
-            match = re.search(r'([^(]+)[(](([^)]+))', fund_name)
-            name = self._name_parser.parse_fund_name(match.group(1))
-            charge = match.group(2).split(' ')[0]
-            
-            self._source_data[name] = {'Charge': charge, 'Price': row['Unit prices']}
-            
-            
-            

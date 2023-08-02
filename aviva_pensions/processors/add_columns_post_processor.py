@@ -1,13 +1,15 @@
 from aviva_pensions.processors.post_processor_interface import PostProcessorInterface
 
+from aviva_pensions.readers.data_provider_interface import DataProviderInterface
+
 """
     Add columns from another csv to the report
 """
 class AddColumnsPostProcessor(PostProcessorInterface):
     
-    def __init__(self, key:str, columns:list[str], reader) -> None:
+    def __init__(self, key:str, columns:list[str], data_provider:DataProviderInterface) -> None:
         self._columns = columns
-        self._reader = reader
+        self._data_provider = data_provider
         self._source_data = {}
         self._key_name = key
         
@@ -18,7 +20,7 @@ class AddColumnsPostProcessor(PostProcessorInterface):
     def process(self, row: dict) -> dict:
         
         if not len(self._source_data):
-            self._read_data()
+            self._source_data = self._data_provider.read_data()
         
         # if the key is not in the input then add empty columns        
         if not self._key_name in row:
@@ -47,14 +49,3 @@ class AddColumnsPostProcessor(PostProcessorInterface):
             print("id {}\n not found in {}".format(id, self._source_data.keys()))
             
         return row
-    
-    def _read_data(self):
-        
-        self._source_data = {}
-        
-        for row in self._reader:
-            if self._key_name in row:
-                self._source_data[str(row[self._key_name])] = row
-            else:
-                print("_read_data error, key {} not found in {}".format(self._key_name, row))
-            

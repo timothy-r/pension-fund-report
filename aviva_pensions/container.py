@@ -18,6 +18,9 @@ from aviva_pensions.processors.add_columns_post_processor import AddColumnsPostP
 from aviva_pensions.processors.add_prices_charges_post_processor import AddPricesChargesPostProcessor
 
 from aviva_pensions.readers.csv_dict_reader import CSVDictReader
+from aviva_pensions.readers.list_to_dict_data_provider import ListToDictDataProvider
+from aviva_pensions.readers.extract_prices_charges_data_provider import ExtractPricesChargesDataProvider
+
 class Container(containers.DeclarativeContainer):
     
     config = providers.Configuration(yaml_files=["./config.yml"])
@@ -60,26 +63,39 @@ class Container(containers.DeclarativeContainer):
         config.post_processor.add_columns.encoding
     )
     
+    add_columns_data_provider = providers.Factory(
+        ListToDictDataProvider,
+        key=config.post_processor.add_columns.key,
+        reader=add_columns_reader
+    )
+    
     add_prices_reader = providers.Factory(
         CSVDictReader,
         config.post_processor.add_prices.file,
         config.post_processor.add_prices.delim,
         config.post_processor.add_prices.encoding
     )
-        
+    
+    add_prices_data_provider = providers.Factory(
+        ExtractPricesChargesDataProvider,
+        reader=add_prices_reader,
+        name_parser=name_parser
+    )
+    
     add_cols_post_processor = providers.Factory(
         AddColumnsPostProcessor,
         key=config.post_processor.add_columns.key,
         columns=config.post_processor.add_columns.columns,
-        reader=add_columns_reader
+        data_provider=add_columns_data_provider
     )
     
     add_prices_post_processor = providers.Factory(
         AddPricesChargesPostProcessor,
         key=config.post_processor.add_prices.key,
         columns=config.post_processor.add_prices.columns,
-        reader=add_prices_reader,
-        name_parser=name_parser
+        data_provider=add_prices_data_provider
+        # reader=add_prices_reader,
+        # name_parser=name_parser
     )
         
     char_stream_parsers=providers.List(
