@@ -26,6 +26,8 @@ class RiskParser(CharStreamParserInterface):
                     self._done = True
             else:
                 self._chars.clear()
+                # add this char to the list, so 1,1,2,3,4,5,6,7 is parsed correctly
+                self._chars.append(char)
     
     def get_chars(self):
         return self._chars
@@ -34,11 +36,11 @@ class RiskParser(CharStreamParserInterface):
         return 'risk'
 
     def get_values(self) -> dict:
-        if not self._done:
-            return {self.get_name(): ''}
+        if self._done:
 
-        for char in self._chars:
-            if char['stroking_color'] == (0, 0, 0) and char['non_stroking_color'] == (0, 0, 0):
-                return {self.get_name(): char['text']}
+            for char in self._chars:
+                if char['stroking_color'] == (0, 0, 0) and char['non_stroking_color'] == (0, 0, 0):
+                    return {self.get_name(): char['text']}
         
+        return {self.get_name(): ''}
         

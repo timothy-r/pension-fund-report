@@ -25,6 +25,7 @@ class AddColumnsPostProcessor(PostProcessorInterface):
         
         # if the key is not in the input then add empty columns        
         if not self._key in data:
+            print("key {} not found in {}".format(self._key, data))
             for col in self._columns:
                 data[col] = ''
             return data
