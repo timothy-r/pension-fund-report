@@ -1,4 +1,4 @@
-from aviva_pensions.parsers.file_name_parser import FileNameParser
+from aviva_pensions.parsers.name_parser import NameParser
 from aviva_pensions.parsers.char_stream_parser_interface import CharStreamParserInterface
 from aviva_pensions.parsers.text_parser_interface import TextParserInterface
 from aviva_pensions.parsers.table_parser_interface import TableParserInterface
@@ -14,7 +14,7 @@ class Plumber:
         char_stream_parsers:list[CharStreamParserInterface], 
         text_parsers:list[TextParserInterface],
         table_parsers: list[TableParserInterface],
-        file_name_parser: FileNameParser
+        file_name_parser: NameParser
     ) -> None:
         
         self._char_stream_parsers = char_stream_parsers
@@ -39,7 +39,7 @@ class Plumber:
     def get_data(self):
         
         results = { 
-            "Name": self._file_name_parser.parse_name(self._file_name),
+            "Name": self._file_name_parser.parse_file_name(self._file_name),
             "FileName": self._file_name
         }
         

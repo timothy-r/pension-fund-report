@@ -9,12 +9,13 @@ from aviva_pensions.services.post_processor_service import PostProcessorService
 from aviva_pensions.parsers.risk_parser import RiskParser
 from aviva_pensions.parsers.risks_parser import RisksParser
 from aviva_pensions.parsers.basic_table_parser import BasicTableParser
-from aviva_pensions.parsers.file_name_parser import FileNameParser
+from aviva_pensions.parsers.name_parser import NameParser
 from aviva_pensions.parsers.performance_table_parser import PerformanceTableParser
 from aviva_pensions.parsers.table_cell_label_parser import TableCellLabelParser
 
 from aviva_pensions.processors.performance_post_processor import PerformancePostProcessor
 from aviva_pensions.processors.add_columns_post_processor import AddColumnsPostProcessor
+from aviva_pensions.processors.add_prices_charges_post_processor import AddPricesChargesPostProcessor
 
 from aviva_pensions.readers.csv_dict_reader import CSVDictReader
 class Container(containers.DeclarativeContainer):
@@ -39,8 +40,8 @@ class Container(containers.DeclarativeContainer):
         table_cell_label_parser
     )
     
-    file_name_parser = providers.Factory(
-        FileNameParser
+    name_parser = providers.Factory(
+        NameParser
     )
     
     perf_table_parser = providers.Factory(
@@ -59,13 +60,26 @@ class Container(containers.DeclarativeContainer):
         config.post_processor.add_columns.encoding
     )
     
+    add_prices_reader = providers.Factory(
+        CSVDictReader,
+        config.post_processor.add_prices.file,
+        config.post_processor.add_prices.delim,
+        config.post_processor.add_prices.encoding
+    )
+        
     add_cols_post_processor = providers.Factory(
         AddColumnsPostProcessor,
-        config.post_processor.add_columns.key,
-        config.post_processor.add_columns.columns,
-        add_columns_reader
+        key=config.post_processor.add_columns.key,
+        columns=config.post_processor.add_columns.columns,
+        reader=add_columns_reader
     )
     
+    add_prices_post_processor = providers.Factory(
+        AddPricesChargesPostProcessor,
+        reader=add_prices_reader,
+        name_parser = name_parser
+    )
+        
     char_stream_parsers=providers.List(
         risk_parser
     )
@@ -81,7 +95,8 @@ class Container(containers.DeclarativeContainer):
     
     post_processors = providers.List(
         perf_post_processor,
-        add_cols_post_processor
+        add_cols_post_processor,
+        add_prices_post_processor
     )
     
     plumber = providers.Factory(
@@ -89,11 +104,12 @@ class Container(containers.DeclarativeContainer):
         char_stream_parsers = char_stream_parsers,
         text_parsers = text_parsers,
         table_parsers = table_parsers,
-        file_name_parser = file_name_parser
+        file_name_parser = name_parser
     )
     
     report_writer = providers.Singleton(
-        ReportWriter
+        ReportWriter,
+        columns=config.report.columns
     )
     
     pdf_extractor_service = providers.Singleton(

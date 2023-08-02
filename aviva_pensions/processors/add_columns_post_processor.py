@@ -1,10 +1,7 @@
-import csv
-
 from aviva_pensions.processors.post_processor_interface import PostProcessorInterface
 
 """
     Add columns from another csv to the report
-    Support falling back to a different key or fix the SEDOL lookup?
 """
 class AddColumnsPostProcessor(PostProcessorInterface):
     
@@ -32,6 +29,7 @@ class AddColumnsPostProcessor(PostProcessorInterface):
         
         # get the id to read from the data source 
         id = str(row[self._key_name])
+        
         # remove leading 0s from the ids
         if id[0] == '0':
             id = str(int(id))
