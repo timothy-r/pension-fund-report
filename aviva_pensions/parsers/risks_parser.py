@@ -4,22 +4,10 @@ from aviva_pensions.parsers.text_parser_interface import TextParserInterface
 
 class RisksParser(TextParserInterface):
     
-    def __init__(self) -> None:
+    def __init__(self, names:list[str]) -> None:
         super().__init__()
         
-        # // config these names
-        self._risk_names = [
-            "General",
-            "Foreign Exchange Risk",
-            "Emerging Markets",
-            "Smaller Companies",
-            "Fixed Interest",
-            "Derivatives",
-            "Cash/Money Market Funds",
-            "Property Funds",
-            "High Yield Bonds",
-            "Reinsured Funds"
-        ]
+        self._risk_names = names
         
     def get_name(self) -> str:
         return 'risks'

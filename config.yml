@@ -44,4 +44,17 @@ report:
     - Property Funds
     - High Yield Bonds
     - Reinsured Funds
+
+risks:
+  names:
+    - General
+    - Foreign Exchange Risk
+    - Emerging Markets
+    - Smaller Companies
+    - Fixed Interest
+    - Derivatives
+    - Cash/Money Market Funds
+    - Property Funds
+    - High Yield Bonds
+    - Reinsured Funds"
     

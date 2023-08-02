@@ -35,7 +35,8 @@ class Container(containers.DeclarativeContainer):
     )
 
     risks_parser = providers.Factory(
-        RisksParser
+        RisksParser,
+        names=config.risks.names
     )
     
     basic_table_parser = providers.Factory(
