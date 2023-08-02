@@ -76,8 +76,10 @@ class Container(containers.DeclarativeContainer):
     
     add_prices_post_processor = providers.Factory(
         AddPricesChargesPostProcessor,
+        key=config.post_processor.add_prices.key,
+        columns=config.post_processor.add_prices.columns,
         reader=add_prices_reader,
-        name_parser = name_parser
+        name_parser=name_parser
     )
         
     char_stream_parsers=providers.List(

@@ -4,15 +4,14 @@ from aviva_pensions.processors.post_processor_interface import PostProcessorInte
 from aviva_pensions.parsers.name_parser import NameParser
 
 """
-    insert prices into the data, if not already set?
+    insert prices into the data, if not already set
 """
 class AddPricesChargesPostProcessor(PostProcessorInterface):
     
-    def __init__(self, reader, name_parser:NameParser) -> None:
+    def __init__(self, key:str, columns:list[str], reader, name_parser:NameParser) -> None:
         super().__init__()
-        # self._keys = keys
-        self._key_name = 'Name'
-        self._cols = ['Charge', 'Price']
+        self._key_name = key
+        self._columns = columns
         self._reader = reader
         self._name_parser = name_parser
         self._source_data = {}
@@ -34,15 +33,22 @@ class AddPricesChargesPostProcessor(PostProcessorInterface):
             return row
         
         id = str(row[self._key_name])
+        
         if id in self._source_data:
-            for k in self._source_data[id].keys():
-                # don't overwrite cols with values
-                if k in row:
-                    if row[k] == '':
-                        row[k] = self._source_data[id][k]
-                else:
-                    row[k] = self._source_data[id][k]
             
+            data_row = self._source_data[id]
+            
+            for col in self._columns:
+                
+                if col in data_row:
+                
+                    # don't overwrite cols with values
+                    if col in row:
+                        if row[col] == '':
+                            row[col] = data_row[col]
+                    else:
+                        row[col] = data_row[col]
+                
         else:
             print("id '{}' not found in source data".format(id))
         
