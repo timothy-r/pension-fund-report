@@ -32,6 +32,9 @@ class AddColumnsPostProcessor(PostProcessorInterface):
         
         # get the id to read from the data source 
         id = str(row[self._key_name])
+        # remove leading 0s from the ids
+        if id[0] == '0':
+            id = str(int(id))
         
         if id in self._source_data:
             
@@ -43,7 +46,7 @@ class AddColumnsPostProcessor(PostProcessorInterface):
                 else:
                     row[col] = ''
         else:
-            print("id {} not found in {}".format(id, row))
+            print("id {}\n not found in {}".format(id, self._source_data.keys()))
             
         return row
     
@@ -55,5 +58,5 @@ class AddColumnsPostProcessor(PostProcessorInterface):
             if self._key_name in row:
                 self._source_data[str(row[self._key_name])] = row
             else:
-                print(row)
+                print("_read_data error, key {} not found in {}".format(self._key_name, row))
             

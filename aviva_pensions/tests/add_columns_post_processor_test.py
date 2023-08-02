@@ -36,11 +36,11 @@ class AddColumnsPostProcessorTest(unittest.TestCase):
         
         self._processor = AddColumnsPostProcessor(key=key, columns=cols,reader=data)
         
-        row = {'SEDOL':'3346251'}
+        row = {'SEDOL':'03346251'}
         results = self._processor.process(row=row)
         
         self.assertTrue(4 == len(results))
-        self.assertTrue('3346251' == results['SEDOL'])
+        self.assertTrue('03346251' == results['SEDOL'])
         self.assertTrue('0.17%' == results['Charge'])
         self.assertTrue('4' == results['MS ratings'])
         self.assertTrue('3' == results['FT ratings'])
