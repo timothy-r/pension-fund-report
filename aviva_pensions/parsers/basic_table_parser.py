@@ -1,11 +1,12 @@
 from aviva_pensions.parsers.table_parser_interface import TableParserInterface
+from aviva_pensions.parsers.name_parser import NameParser
 
 class BasicTableParser(TableParserInterface):
     
-    def __init__(self, table_cell_label_parser) -> None:
+    def __init__(self, name_parser:NameParser) -> None:
         super().__init__()
         self._data = {}
-        self._table_cell_label_parser = table_cell_label_parser
+        self._name_parser = name_parser
         
     def get_name(self) -> str:
         return 'basic'
@@ -32,8 +33,7 @@ class BasicTableParser(TableParserInterface):
                 cell = row[0].split()
                 label = ' '.join(cell[:-1])
                 
-                label = self._table_cell_label_parser.parse_label(label)
-                # label = self._fix_duplicate_characters(label)
+                label = self._name_parser.parse_label(label)
                 
                 if label != '':
                     try:
@@ -47,19 +47,3 @@ class BasicTableParser(TableParserInterface):
             #     print("read_table : '{}'='{}'".format(row[0], data[row[0]]))
                 
         self._data = self._data | data 
-    
-    """ 
-        fix duplicated characters in label - all non-space chars 
-    """
-    def _fix_duplicate_characters(self, value:str)-> str:
-   
-        words = value.split()
-        result = []
-        for word in words:
-            # keep every 4th char
-            chars = word[::4]
-            result.append(''.join(chars))
-        
-        result = ' '.join(result)
-        
-        return result

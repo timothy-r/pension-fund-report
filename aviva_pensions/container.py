@@ -11,7 +11,6 @@ from aviva_pensions.parsers.risks_parser import RisksParser
 from aviva_pensions.parsers.basic_table_parser import BasicTableParser
 from aviva_pensions.parsers.name_parser import NameParser
 from aviva_pensions.parsers.performance_table_parser import PerformanceTableParser
-from aviva_pensions.parsers.table_cell_label_parser import TableCellLabelParser
 from aviva_pensions.parsers.performance_matrix import PerformanceMatrix
 
 from aviva_pensions.processors.performance_post_processor import PerformancePostProcessor
@@ -26,8 +25,8 @@ class Container(containers.DeclarativeContainer):
     
     config = providers.Configuration(yaml_files=["./config.yml"])
     
-    table_cell_label_parser = providers.Factory(
-        TableCellLabelParser
+    name_parser = providers.Factory(
+        NameParser
     )
         
     # define the plugins so that each plumber instance gets new plugin instances
@@ -42,11 +41,7 @@ class Container(containers.DeclarativeContainer):
     
     basic_table_parser = providers.Factory(
         BasicTableParser,
-        table_cell_label_parser
-    )
-    
-    name_parser = providers.Factory(
-        NameParser
+        name_parser=name_parser
     )
     
     perf_matrix_parser_factory = providers.Factory(
@@ -56,7 +51,7 @@ class Container(containers.DeclarativeContainer):
 
     perf_table_parser = providers.Factory(
         PerformanceTableParser,
-        table_cell_label_parser=table_cell_label_parser,
+        name_parser=name_parser,
         perf_matrix_parser_factory=perf_matrix_parser_factory.provider
     )
     

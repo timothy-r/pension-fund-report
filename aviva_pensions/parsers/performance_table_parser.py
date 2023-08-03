@@ -2,20 +2,20 @@ from typing import Callable
 
 from aviva_pensions.parsers.table_parser_interface import TableParserInterface
 from aviva_pensions.parsers.performance_matrix import PerformanceMatrix
+from aviva_pensions.parsers.name_parser import NameParser
 
 class PerformanceTableParser(TableParserInterface):
     
-    def __init__(self, table_cell_label_parser, perf_matrix_parser_factory:Callable[..., PerformanceMatrix]) -> None:
+    def __init__(self, name_parser:NameParser, perf_matrix_parser_factory:Callable[..., PerformanceMatrix]) -> None:
         super().__init__()
         self._data = {}
-        self._table_cell_label_parser = table_cell_label_parser
+        self._name_parser = name_parser
         self._perf_matrix_parser_factory = perf_matrix_parser_factory
         
     def get_name(self) -> str:
         return 'performance'
     
     def get_values(self) -> dict:
-        # perf_matrix = 
         
         return { self.get_name() :  self._perf_matrix_parser_factory(data=self._data)}
     
@@ -38,7 +38,7 @@ class PerformanceTableParser(TableParserInterface):
                 else:
                     cell = row[0].split()
                     label = ' '.join(cell)
-                    label = self._table_cell_label_parser.parse_label(label)
+                    label = self._name_parser.parse_label(label)
                     
                     # print("label : {}".format(label))
                     index = 0
@@ -57,7 +57,7 @@ class PerformanceTableParser(TableParserInterface):
         for cell in row:
             raw = cell.split()
             label = ' '.join(raw)
-            value = self._table_cell_label_parser.parse_label(label)
+            value = self._name_parser.parse_label(label)
             data.append(value)
 
         return data
