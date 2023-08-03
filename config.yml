@@ -25,6 +25,7 @@ post_processor:
       - Year-3
       - Year-4
 report:
+  outfile: "report.csv"
   columns:
     - Name
     - ISIN Code
