@@ -2,8 +2,8 @@ from aviva_pensions.processors.post_processor_interface import PostProcessorInte
 
 class PerformancePostProcessor(PostProcessorInterface):
     
-    def __init__(self) -> None:
-        self._year_keys = ['Year', 'Year-1', 'Year-2', 'Year-3', 'Year-4']
+    def __init__(self, columns:list[str]) -> None:
+        self._year_keys = columns
         
     """
         Using the performance matrix generate averages

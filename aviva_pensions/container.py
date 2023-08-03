@@ -61,7 +61,8 @@ class Container(containers.DeclarativeContainer):
     )
     
     perf_post_processor = providers.Factory(
-        PerformancePostProcessor
+        PerformancePostProcessor,
+        columns=config.post_processor.performance.columns
     )
     
     add_columns_reader = providers.Factory(
