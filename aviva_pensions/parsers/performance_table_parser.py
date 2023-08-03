@@ -27,32 +27,18 @@ class PerformanceTableParser(TableParserInterface):
         
         # first row is the column headers, first cell in first row is empty
         for row in table:
+            
             row_num += 1
             
             if len(row) == 6:
-                row_dict = {}
                 
                 if row_num == 1:
                     header = self._parse_table_header(row)
-                    # print(header)
                 else:
-                    cell = row[0].split()
-                    label = ' '.join(cell)
-                    label = self._name_parser.parse_label(label)
-                    
-                    # print("label : {}".format(label))
-                    index = 0
-                    for c in row:
-                        # print("cell :{} {}".format(index, c))
-                        if index > 0 and index < len(header):
-                            row_dict[header[index]] = c
-                        index += 1
-                        
-                    self._data[label] = row_dict
+                    self._data = self._data | self._parse_table_row(header=header, row=row)
                 
-                # print(row_dict)
                 
-    def _parse_table_header(self, row):
+    def _parse_table_header(self, row) -> list:
         data = []
         for cell in row:
             raw = cell.split()
@@ -61,3 +47,18 @@ class PerformanceTableParser(TableParserInterface):
             data.append(value)
 
         return data
+
+    def _parse_table_row(self, header:list, row) -> dict:
+        
+        row_dict = {}
+        cell = row[0].split()
+        label = ' '.join(cell)
+        label = self._name_parser.parse_label(label)
+        
+        index = 0
+        for c in row:
+            if index > 0 and index < len(header):
+                row_dict[header[index]] = c
+            index += 1
+        
+        return {label:row_dict}
