@@ -1,6 +1,6 @@
 
 """
-    consider creating a PerformanceMatrixRow class
+    A matrix of PerformanceMatrixRow instances
 """
 class PerformanceMatrix:
        

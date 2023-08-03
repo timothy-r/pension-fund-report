@@ -40,18 +40,42 @@ class PerformanceTableParserTest(unittest.TestCase):
         
         fund_row = data['fund']
 
-        expected = {'30/06/19': 2.27, '30/06/20': 43.51, '30/06/21':45.86,'30/06/22':-42.59,'30/06/23':16.9}
+        expected = [
+            {'date':'30/06/19', 'value':2.27},
+            {'date':'30/06/20','value': 43.51}, 
+            {'date':'30/06/21','value':45.86},
+            {'date':'30/06/22','value':-42.59},
+            {'date':'30/06/23','value':16.9}
+        ]
         
-        for k in expected.keys():
-            self.assertTrue(k in fund_row) 
-            self.assertEquals(expected[k], fund_row[k])
+        found = False
+        
+        for expected_item in expected:
+            for row_item in fund_row:
+                if row_item['date'] == expected_item['date']:
+                    found = True
+                    self.assertEquals(row_item['value'], expected_item['value'])
 
+        self.assertTrue(found)
+        
         self.assertTrue('benchmark' in data)
         
         benchmark_row = data['benchmark']
 
-        expected = {'30/06/19': 9.48, '30/06/20': 5.18, '30/06/21':24.49,'30/06/22':-4.02,'30/06/23':11.14}
+        expected = [
+            {'date':'30/06/19', 'value': 9.48},
+            {'date':'30/06/20','value': 5.18}, 
+            {'date':'30/06/21','value': 24.49},
+            {'date':'30/06/22','value':-4.02},
+            {'date':'30/06/23','value':11.14}
+        ]
         
-        for k in expected.keys():
-            self.assertTrue(k in benchmark_row) 
-            self.assertEquals(expected[k], benchmark_row[k])
+        found = False
+        
+        for expected_item in expected:
+            for row_item in benchmark_row:
+                if row_item['date'] == expected_item['date']:
+                    found = True
+                    self.assertEquals(row_item['value'], expected_item['value'])
+
+        self.assertTrue(found)
