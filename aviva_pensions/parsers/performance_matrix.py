@@ -1,10 +1,16 @@
+
+"""
+    consider creating a PerformanceMatrixRow class
+"""
 class PerformanceMatrix:
+       
+    def __init__(self, columns:list[str], data:dict) -> None:
     
-    def __init__(self, data:dict) -> None:
+        self._year_keys = columns
         self._data = data
         
         # keys should be mapped by the parser
-        self._keys = {
+        self._data_keys = {
             'fund' : 'Fund (%)',
             'benchmark' : 'Bench- mark (%)',
             'sector_ave' : 'Sector Average (%)',
@@ -23,34 +29,45 @@ class PerformanceMatrix:
         return self._calculate_average('fund','sector_ave')
 
     """
+        return a dict of Year, Year-1, Year-2, Year-3, Year-4 keys
+        with values {'date':'DD/MM/YY', value: float}
         return a dict of DD/MM/YY => annual_performance
         sort by date
     """
     def get_fund_annual_performance(self) -> dict:
         temp_results = {}
-        main_key = self._keys['fund']
+        main_key = self._data_keys['fund']
+        
+        if not main_key in self._data:
+            # or raise an exception??
+            return {}
         
         keys = []
+        
         for key in self._data[main_key].keys():
             new_key = key.split(' ')[-1]
             keys.append(new_key)
             temp_results[new_key] = self._data[main_key][key]
         
         # sort & create a new dict
-        keys.sort()
+        keys.sort(reverse=True)
         
         results = {}
-        for key in keys:
-            results[key] = temp_results[key]
+        for i in range(0, len(keys)):
+            
+            results[self._year_keys[i]] = {
+                'date': keys[i],
+                'value': temp_results[keys[i]]
+            }
             
         return results
     
     def _calculate_average(self, from_key:str, to_key:str) -> float:
         
-        if self._keys[from_key] in self._data and self._keys[to_key] in self._data:
+        if self._data_keys[from_key] in self._data and self._data_keys[to_key] in self._data:
             
-            from_row = self._data[self._keys[from_key]]
-            to_row = self._data[self._keys[to_key]]
+            from_row = self._data[self._data_keys[from_key]]
+            to_row = self._data[self._data_keys[to_key]]
             
             total = 0.0
             for k in from_row.keys():

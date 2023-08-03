@@ -8,7 +8,7 @@ class PerformanceMatrixTest(unittest.TestCase):
         super().setUp()
         # some data has the word To between the 2 dates
         self._cols = ['30/06/18 To 30/06/19', '30/06/19 30/06/20','30/06/20 To 30/06/21','30/06/21 30/06/22','30/06/22 30/06/23']
-   
+        self._matrix_cols = ["Year", "Year-1", "Year-2", "Year-3", "Year-4"]
     
     def test_fund_to_benchmark_average_fund_higher(self):
         
@@ -17,7 +17,7 @@ class PerformanceMatrixTest(unittest.TestCase):
             'benchmark': ['10.05', '4.12','1.99','3.01','1.03']
         })
         
-        matrix = PerformanceMatrix(data)
+        matrix = PerformanceMatrix(columns=self._matrix_cols, data=data)
         result = matrix.fund_to_benchmark_average()
         
         self.assertEquals(1, result)
@@ -28,7 +28,7 @@ class PerformanceMatrixTest(unittest.TestCase):
             'benchmark':['12.94', '9.62','19.01','5.91','8.77']
         })
         
-        matrix = PerformanceMatrix(data)
+        matrix = PerformanceMatrix(columns=self._matrix_cols, data=data)
         result = matrix.fund_to_benchmark_average()
         
         self.assertEquals(0, result)
@@ -39,13 +39,13 @@ class PerformanceMatrixTest(unittest.TestCase):
             'benchmark':['12.94', '1.62','11.01','5.91','8.77']
         })
         
-        matrix = PerformanceMatrix(data)
+        matrix = PerformanceMatrix(columns=self._matrix_cols, data=data)
         result = matrix.fund_to_benchmark_average()
         
         self.assertEquals(0.6, result)
     
     def test_fund_to_benchmark_average_fund_validates_data(self):
-        matrix = PerformanceMatrix({})
+        matrix = PerformanceMatrix(columns=self._matrix_cols, data={})
         result = matrix.fund_to_benchmark_average()
         
         self.assertEquals(None, result)
@@ -56,13 +56,14 @@ class PerformanceMatrixTest(unittest.TestCase):
             'benchmark': ['12.94', '-','19.01','5.91','/']
         })
         
-        matrix = PerformanceMatrix(data)
+        
+        matrix = PerformanceMatrix(columns=self._matrix_cols, data=data)
         result = matrix.fund_to_benchmark_average()
         
         self.assertEquals(0, result)
         
     def test_fund_to_sector_average_validates_data(self):
-        matrix = PerformanceMatrix({})
+        matrix = PerformanceMatrix(columns=self._matrix_cols, data={})
         result = matrix.fund_to_benchmark_average()
         
         self.assertEquals(None, result)
@@ -73,7 +74,7 @@ class PerformanceMatrixTest(unittest.TestCase):
             'sector': ['10.05', '4.12','1.99','3.01','1.03']
         })
         
-        matrix = PerformanceMatrix(data)
+        matrix = PerformanceMatrix(columns=self._matrix_cols, data=data)
         result = matrix.fund_to_sector_average()
         
         self.assertEquals(1, result)
@@ -84,7 +85,7 @@ class PerformanceMatrixTest(unittest.TestCase):
             'sector': ['12.94', '9.62','19.01','5.91','8.77']
         })
         
-        matrix = PerformanceMatrix(data)
+        matrix = PerformanceMatrix(columns=self._matrix_cols, data=data)
         result = matrix.fund_to_sector_average()
         
         self.assertEquals(0, result)
@@ -95,7 +96,7 @@ class PerformanceMatrixTest(unittest.TestCase):
             'sector': ['12.94', '9.62','19.01','5.91','8.77']
         })
         
-        matrix = PerformanceMatrix(data)
+        matrix = PerformanceMatrix(columns=self._matrix_cols, data=data)
         result = matrix.fund_to_sector_average()
         
         self.assertEquals(0.2, result)
@@ -106,53 +107,64 @@ class PerformanceMatrixTest(unittest.TestCase):
             'sector': ['12.94', '-','19.01','5.91','/']
         })
         
-        matrix = PerformanceMatrix(data)
+        matrix = PerformanceMatrix(columns=self._matrix_cols, data=data)
         result = matrix.fund_to_sector_average()
         
         self.assertEquals(0, result)
 
     def test_get_fund_performance(self) -> None:
         data = self._get_test_matrix({
-            'fund': ['10.05', '14.12','1.99','3.01','1.03'],
+            'fund': ['5', '4','3','2','1'],
         })
         
-        matrix = PerformanceMatrix(data=data)
+        matrix = PerformanceMatrix(columns=self._matrix_cols, data=data)
+        
         result = matrix.get_fund_annual_performance()
         self.assertEquals(5, len(result))
-        self.assertEquals('10.05', result['30/06/19'])
-        self.assertEquals('14.12', result['30/06/20'])
-        self.assertEquals('1.99', result['30/06/21'])
-        self.assertEquals('3.01', result['30/06/22'])
-        self.assertEquals('1.03', result['30/06/23'])
-    
-    def test_get_fund_performance_orders_by_date(self) -> None:
         
+        self.assertEquals('1', result['Year']['value'])
+        self.assertEquals('30/06/23', result['Year']['date'])
+        
+        self.assertEquals('2', result['Year-1']['value'])
+        self.assertEquals('30/06/22', result['Year-1']['date'])
+
+        self.assertEquals('3', result['Year-2']['value'])
+        self.assertEquals('30/06/21', result['Year-2']['date'])
+          
+        self.assertEquals('4', result['Year-3']['value'])
+        self.assertEquals('30/06/20', result['Year-3']['date'])
+          
+        self.assertEquals('5', result['Year-4']['value'])
+        self.assertEquals('30/06/19', result['Year-4']['date'])
+                  
+    def test_get_fund_performance_orders_by_date(self) -> None:
+    
         cols = ['30/06/21 30/06/22', '30/06/19 30/06/20','30/06/20 30/06/21','30/06/22 30/06/23', '30/06/18 30/06/19']
     
         data = self._get_test_matrix({
-            'fund': ['10.05', '14.12','1.99','3.01','1.03'],
+            'fund': ['2', '4','3','1','5'],
         }, cols=cols)
         
-        # in reverse order, test using popitem from results
-        expected_keys = [ '30/06/23', '30/06/22', '30/06/21','30/06/20','30/06/19']
-    
-        matrix = PerformanceMatrix(data=data)
+        matrix = PerformanceMatrix(columns=self._matrix_cols, data=data)
+        
         result = matrix.get_fund_annual_performance()
         self.assertEquals(5, len(result))
         
         # test the values are correct
-        self.assertEquals('10.05', result['30/06/22'])
-        self.assertEquals('14.12', result['30/06/20'])
-        self.assertEquals('1.99', result['30/06/21'])
-        self.assertEquals('3.01', result['30/06/23'])
-        self.assertEquals('1.03', result['30/06/19'])
+        self.assertEquals('1', result['Year']['value'])
+        self.assertEquals('30/06/23', result['Year']['date'])
         
-        # test the keys are ordered
-        for i in range(0, 5):
-            item = result.popitem()
-            self.assertEquals(expected_keys[i], item[0])
-        
+        self.assertEquals('2', result['Year-1']['value'])
+        self.assertEquals('30/06/22', result['Year-1']['date'])
 
+        self.assertEquals('3', result['Year-2']['value'])
+        self.assertEquals('30/06/21', result['Year-2']['date'])
+          
+        self.assertEquals('4', result['Year-3']['value'])
+        self.assertEquals('30/06/20', result['Year-3']['date'])
+          
+        self.assertEquals('5', result['Year-4']['value'])
+        self.assertEquals('30/06/19', result['Year-4']['date'])
         
         
     def _get_test_matrix(self, data:dict, cols:list=[]):

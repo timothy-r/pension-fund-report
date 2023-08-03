@@ -13,7 +13,6 @@ class PerformancePostProcessor(PostProcessorInterface):
         if not 'performance' in row:
             row['fund_to_benchmark_ave'] = ''
             row['fund_to_sector_ave'] = ''
-            # row['annual_performance'] = ''
             for key in self._year_keys:
                 row[key] = ''
             return row
@@ -27,7 +26,7 @@ class PerformancePostProcessor(PostProcessorInterface):
         # Year, Year-1 Year-2 Year-3 Year-4
         # this dict should be sorted
         annual_performance = performance_matrix.get_fund_annual_performance()
-        for key in self._year_keys:
-            row[key] = annual_performance.popitem()[1]
+        for key in annual_performance.keys():
+            row[key] = annual_performance[key]['value']
         
         return row

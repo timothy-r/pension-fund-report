@@ -1,19 +1,23 @@
+from typing import Callable
+
 from aviva_pensions.parsers.table_parser_interface import TableParserInterface
 from aviva_pensions.parsers.performance_matrix import PerformanceMatrix
 
 class PerformanceTableParser(TableParserInterface):
     
-    def __init__(self, table_cell_label_parser) -> None:
+    def __init__(self, table_cell_label_parser, perf_matrix_parser_factory:Callable[..., PerformanceMatrix]) -> None:
         super().__init__()
         self._data = {}
         self._table_cell_label_parser = table_cell_label_parser
+        self._perf_matrix_parser_factory = perf_matrix_parser_factory
         
     def get_name(self) -> str:
         return 'performance'
     
     def get_values(self) -> dict:
-        # print(self._data)
-        return { self.get_name() : PerformanceMatrix(self._data) }
+        # perf_matrix = 
+        
+        return { self.get_name() :  self._perf_matrix_parser_factory(data=self._data)}
     
     def read_table(self, num, table) -> None:
         # return a dict of dicts
