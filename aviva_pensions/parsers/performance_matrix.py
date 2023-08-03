@@ -22,6 +22,17 @@ class PerformanceMatrix:
     def fund_to_sector_average(self) -> float:
         return self._calculate_average('fund','sector_ave')
 
+    """
+        return a dict of DD/MM/YY => annual_performance
+    """
+    def get_fund_annual_performance(self) -> dict:
+        results = {}
+        for key in self._data[self._keys['fund']].keys():
+            new_key = key.split(' ')[-1]
+            results[new_key] = self._data[self._keys['fund']][key]
+        
+        return results
+    
     def _calculate_average(self, from_key:str, to_key:str) -> float:
         
         if self._keys[from_key] in self._data and self._keys[to_key] in self._data:

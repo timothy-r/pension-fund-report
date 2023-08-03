@@ -1,4 +1,5 @@
 import re
+from typing import Iterable
 
 from aviva_pensions.readers.data_provider_interface import DataProviderInterface
 from aviva_pensions.parsers.name_parser import NameParser
@@ -6,7 +7,7 @@ from aviva_pensions.parsers.name_parser import NameParser
 
 class ExtractPricesChargesDataProvider(DataProviderInterface):
     
-    def __init__(self, reader, name_parser:NameParser) -> None:
+    def __init__(self, reader:Iterable, name_parser:NameParser) -> None:
         self._reader = reader
         self._name_parser = name_parser
     

@@ -9,37 +9,6 @@ class PerformanceMatrixTest(unittest.TestCase):
     
     def test_fund_to_benchmark_average_fund_higher(self):
         
-        # data = {
-        #     'Fund (%)': {
-        #         '30/06/18 30/06/19': '12.94', 
-        #         '30/06/19 30/06/20': '9.62', 
-        #         '30/06/20 30/06/21': '19.01', 
-        #         '30/06/21 30/06/22': '5.91', 
-        #         '30/06/22 30/06/23': '8.77'
-        #     }, 
-        #     'Bench- mark (%)': {
-        #         '30/06/18 30/06/19': '4.69', 
-        #         '30/06/19 30/06/20': '4.57', 
-        #         '30/06/20 30/06/21': '4.05', 
-        #         '30/06/21 30/06/22': '4.36', 
-        #         '30/06/22 30/06/23': '7.21'
-        #     }, 
-        #     'Sector Average (%)': {
-        #         '30/06/18 30/06/19': '3.76',
-        #         '30/06/19 30/06/20': '0.18',
-        #         '30/06/20 30/06/21': '15.42',
-        #         '30/06/21 30/06/22': '-6.76', 
-        #         '30/06/22 30/06/23': '2.98'
-        #     }, 
-        #     'Quartile rank within sector': {
-        #         '30/06/18 30/06/19': '3', 
-        #         '30/06/19 30/06/20': '2', 
-        #         '30/06/20 30/06/21': '1', 
-        #         '30/06/21 30/06/22': '3', 
-        #         '30/06/22 30/06/23': '4'
-        #     }
-        # }
-        
         data = self._get_test_matrix({
             'fund': ['12.94', '9.62','19.01','5.91','8.77'],
             'benchmark': ['10.05', '4.12','1.99','3.01','1.03']
@@ -139,6 +108,20 @@ class PerformanceMatrixTest(unittest.TestCase):
         
         self.assertEquals(0, result)
 
+    def test_get_fund_performance(self) -> None:
+        data = self._get_test_matrix({
+            'fund': ['10.05', '14.12','1.99','3.01','1.03'],
+        })
+        
+        matrix = PerformanceMatrix(data=data)
+        result = matrix.get_fund_annual_performance()
+        self.assertEquals(5, len(result))
+        self.assertEquals('10.05', result['30/06/19'])
+        self.assertEquals('14.12', result['30/06/20'])
+        self.assertEquals('1.99', result['30/06/21'])
+        self.assertEquals('3.01', result['30/06/22'])
+        self.assertEquals('1.03', result['30/06/23'])
+        
     def _get_test_matrix(self, data:dict):
         keys = {'fund':'Fund (%)','benchmark':'Bench- mark (%)','sector':'Sector Average (%)','quartile':'Quartile rank within sector'}
         

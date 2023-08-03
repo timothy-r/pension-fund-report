@@ -1,3 +1,5 @@
+from typing import Iterable
+
 from aviva_pensions.readers.data_provider_interface import DataProviderInterface
 
 """
@@ -5,7 +7,7 @@ from aviva_pensions.readers.data_provider_interface import DataProviderInterface
 """
 class ListToDictDataProvider(DataProviderInterface):
     
-    def __init__(self, key:str, reader) -> None:
+    def __init__(self, key:str, reader:Iterable) -> None:
         self._key_name = key
         self._reader = reader
     
