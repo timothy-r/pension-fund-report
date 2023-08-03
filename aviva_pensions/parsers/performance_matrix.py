@@ -44,6 +44,7 @@ class PerformanceMatrix:
         
         keys = []
         
+        # parser should extract correct keys
         for key in self._data[main_key].keys():
             new_key = key.split(' ')[-1]
             keys.append(new_key)

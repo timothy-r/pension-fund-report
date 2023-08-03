@@ -11,12 +11,20 @@ class PerformanceTableParser(TableParserInterface):
         self._data = {}
         self._name_parser = name_parser
         self._perf_matrix_parser_factory = perf_matrix_parser_factory
+        self._data_keys = {
+            'Fund (%)' : 'fund',
+            'Bench- mark (%)' : 'benchmark',
+            'Sector Average (%)' : 'sector_ave',
+            'Quartile rank within sector': 'quart_rank_in_sector'
+        }
         
     def get_name(self) -> str:
         return 'performance'
     
+    def get_data(self) -> dict:
+        return self._data
+    
     def get_values(self) -> dict:
-        
         return { self.get_name() :  self._perf_matrix_parser_factory(data=self._data)}
     
     def read_table(self, num, table) -> None:
@@ -44,6 +52,8 @@ class PerformanceTableParser(TableParserInterface):
             raw = cell.split()
             label = ' '.join(raw)
             value = self._name_parser.parse_label(label)
+            # spilt & use the last date in the label
+            value = value.split(' ')[-1]
             data.append(value)
 
         return data
@@ -54,11 +64,17 @@ class PerformanceTableParser(TableParserInterface):
         cell = row[0].split()
         label = ' '.join(cell)
         label = self._name_parser.parse_label(label)
+        # map label from pdf to the internal label name
+        if label in self._data_keys:
+            label = self._data_keys[label]
         
-        index = 0
-        for c in row:
-            if index > 0 and index < len(header):
-                row_dict[header[index]] = c
-            index += 1
+        for i in range(1, len(header)):
+            row_dict[header[i]] = float(row[i])
+            
+        # index = 0
+        # for c in row:
+        #     if index > 0 and index < len(header):
+                
+        #     index += 1
         
         return {label:row_dict}
