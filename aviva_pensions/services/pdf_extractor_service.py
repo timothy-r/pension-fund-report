@@ -9,21 +9,16 @@ class PDFExtractorService:
     def __init__(self, plumber_factory:Callable[..., Plumber]) -> None:
         self._plumber_factory = plumber_factory
         
-    def read_directory(self, dir: str):
-        
-        results = []
+    def read_directory(self, dir: str) -> None:
         
         p = Path(dir)
         for file in p.iterdir():
             
             row = self._read_pdf(file)
             if row:
-                results.append(row)
-                
-        return results
+                yield row
     
-    def _read_pdf(self, file):
-        # only read
+    def _read_pdf(self, file) -> dict:
         
         try:
             with pdfplumber.open(file) as pdf:

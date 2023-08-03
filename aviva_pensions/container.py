@@ -131,7 +131,8 @@ class Container(containers.DeclarativeContainer):
     
     report_writer = providers.Singleton(
         ReportWriter,
-        columns=config.report.columns
+        columns=config.report.columns,
+        outfile=config.report.outfile
     )
     
     pdf_extractor_service = providers.Singleton(

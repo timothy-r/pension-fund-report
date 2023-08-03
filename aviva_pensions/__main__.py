@@ -9,26 +9,32 @@ from aviva_pensions.services.post_processor_service import PostProcessorService
 @inject
 def main(
     dir:str, 
-    outfile:str,
     pdf_extractor: PDFExtractorService = Provide[Container.pdf_extractor_service],
     post_processor: PostProcessorService = Provide[Container.post_processor_service],
     report_writer: ReportWriter = Provide[Container.report_writer]
 ) -> None:
     
     # read all pdfs from directory
-    results = pdf_extractor.read_directory(dir)
+    for result in pdf_extractor.read_directory(dir):
     
-    # post-process results - generate insights
-    results = post_processor.process(results)
-    
-    # print out the report
-    report_writer.write_data(outfile=outfile, data=results)
-    
+        # post-process results - generate insights
+        result = post_processor.process(data=result)
+        
+        # print out the report
+        report_writer.write_data(data=result)
+
+
 if __name__ == "__main__":
     
     container = Container()
+    # override config.report.outfile with argv[2] if set
     
+    if len(sys.argv) > 2:
+        outfile = sys.argv[2]
+        
+        container.config.report.outfile.from_value(outfile)
+        
     container.init_resources()
     container.wire(modules=[__name__])
 
-    main(*sys.argv[1:])
+    main(sys.argv[1])

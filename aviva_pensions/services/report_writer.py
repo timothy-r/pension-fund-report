@@ -2,19 +2,34 @@ import csv
 
 class ReportWriter:
     
-    def __init__(self, columns:list[str]) -> None:
-        self._fieldnames = columns 
+    def __init__(self, columns:list[str], outfile:str) -> None:
+        self._fieldnames = columns
+        self._outfile = outfile
+        self._written_headers = False
     
-    def write_data(self, outfile:str, data:list) -> None:
+    def write_data(self, data:dict) -> None:
         
-        with open(outfile, 'w', newline='') as csv_outfile:
+        writer = self._open_file()
+        
+        output = {
+            key:value for (key,value) in data.items() if key in self._fieldnames
+        }
             
-            writer = csv.DictWriter(csv_outfile, fieldnames=self._fieldnames)
-            writer.writeheader()
-
-            for row in data:
-                output = {
-                    key:value for (key,value) in row.items() if key in self._fieldnames
-                }
-                writer.writerow(output)
+        writer.writerow(output)
+       
+    
+    def _open_file(self) -> csv.DictWriter:
+        if not self._written_headers:
+            # truncate existing output files
+            mode = 'w'
+        else:
+            mode = 'a'
+            
+        csv_outfile = open(self._outfile, mode=mode, newline='')
+        writer = csv.DictWriter(csv_outfile, fieldnames=self._fieldnames)
         
+        if not self._written_headers:
+            self._written_headers = True
+            writer.writeheader()
+        
+        return writer
