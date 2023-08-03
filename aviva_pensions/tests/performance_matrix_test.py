@@ -5,7 +5,10 @@ from aviva_pensions.parsers.performance_matrix import PerformanceMatrix
 class PerformanceMatrixTest(unittest.TestCase):
     
     def setUp(self) -> None:
-        return super().setUp()
+        super().setUp()
+        # some data has the word To between the 2 dates
+        self._cols = ['30/06/18 To 30/06/19', '30/06/19 30/06/20','30/06/20 To 30/06/21','30/06/21 30/06/22','30/06/22 30/06/23']
+   
     
     def test_fund_to_benchmark_average_fund_higher(self):
         
@@ -121,19 +124,53 @@ class PerformanceMatrixTest(unittest.TestCase):
         self.assertEquals('1.99', result['30/06/21'])
         self.assertEquals('3.01', result['30/06/22'])
         self.assertEquals('1.03', result['30/06/23'])
+    
+    def test_get_fund_performance_orders_by_date(self) -> None:
         
-    def _get_test_matrix(self, data:dict):
+        cols = ['30/06/21 30/06/22', '30/06/19 30/06/20','30/06/20 30/06/21','30/06/22 30/06/23', '30/06/18 30/06/19']
+    
+        data = self._get_test_matrix({
+            'fund': ['10.05', '14.12','1.99','3.01','1.03'],
+        }, cols=cols)
+        
+        # in reverse order, test using popitem from results
+        expected_keys = [ '30/06/23', '30/06/22', '30/06/21','30/06/20','30/06/19']
+    
+        matrix = PerformanceMatrix(data=data)
+        result = matrix.get_fund_annual_performance()
+        self.assertEquals(5, len(result))
+        
+        # test the values are correct
+        self.assertEquals('10.05', result['30/06/22'])
+        self.assertEquals('14.12', result['30/06/20'])
+        self.assertEquals('1.99', result['30/06/21'])
+        self.assertEquals('3.01', result['30/06/23'])
+        self.assertEquals('1.03', result['30/06/19'])
+        
+        # test the keys are ordered
+        for i in range(0, 5):
+            item = result.popitem()
+            self.assertEquals(expected_keys[i], item[0])
+        
+
+        
+        
+    def _get_test_matrix(self, data:dict, cols:list=[]):
         keys = {'fund':'Fund (%)','benchmark':'Bench- mark (%)','sector':'Sector Average (%)','quartile':'Quartile rank within sector'}
         
-        cols = ['30/06/18 30/06/19', '30/06/19 30/06/20','30/06/20 30/06/21','30/06/21 30/06/22','30/06/22 30/06/23']
+        if len(cols) == 0:
+            cols = self._cols
+            
         matrix = {}
         
         for key in ('fund','benchmark','sector','quartile'):
         
             if key in data:
-                matrix[keys[key]] = {}
+                new_row = {}
                 
                 for i in range(0, len(data[key])):
-                    matrix[keys[key]][cols[i]] = data[key][i]
-        
+                    new_row[cols[i]] = data[key][i]
+
+                matrix[keys[key]] = new_row
+                
         return matrix

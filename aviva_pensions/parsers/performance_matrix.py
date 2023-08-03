@@ -24,13 +24,25 @@ class PerformanceMatrix:
 
     """
         return a dict of DD/MM/YY => annual_performance
+        sort by date
     """
     def get_fund_annual_performance(self) -> dict:
-        results = {}
-        for key in self._data[self._keys['fund']].keys():
-            new_key = key.split(' ')[-1]
-            results[new_key] = self._data[self._keys['fund']][key]
+        temp_results = {}
+        main_key = self._keys['fund']
         
+        keys = []
+        for key in self._data[main_key].keys():
+            new_key = key.split(' ')[-1]
+            keys.append(new_key)
+            temp_results[new_key] = self._data[main_key][key]
+        
+        # sort & create a new dict
+        keys.sort()
+        
+        results = {}
+        for key in keys:
+            results[key] = temp_results[key]
+            
         return results
     
     def _calculate_average(self, from_key:str, to_key:str) -> float:
