@@ -13,13 +13,16 @@ class PerformanceTableParser(TableParserInterface):
         perf_matrix_factory:Callable[..., PerformanceMatrix],
         perf_matrix_row_factory:Callable[..., PerformanceMatrixRow]
     ) -> None:
+        
         super().__init__()
         
         # store each row in a PerformanceMatrix instance
         self._data = {}
         
         self._name_parser = name_parser
-        self._perf_matrix_factory = perf_matrix_factory
+        self._perf_matrix = perf_matrix_factory()
+        
+        # self._perf_matrix_factory = perf_matrix_factory
         self._perf_matrix_row_factory = perf_matrix_row_factory
         
         self._data_keys = {
@@ -36,7 +39,7 @@ class PerformanceTableParser(TableParserInterface):
         return self._data
     
     def get_values(self) -> dict:
-        return { self.get_name() :  self._perf_matrix_factory(data=self._data)}
+        return { self.get_name() :  self._perf_matrix}
     
     def read_table(self, num, table) -> None:
         # return a dict of dicts
@@ -54,10 +57,10 @@ class PerformanceTableParser(TableParserInterface):
                 if row_num == 1:
                     header = self._parse_table_header(row)
                 else:
-                    self._data = self._data | self._parse_table_row(header=header, row=row)
+                    self._parse_table_row(header=header, row=row)
                 
                 
-    def _parse_table_header(self, row) -> list:
+    def _parse_table_header(self, row) -> None:
         data = []
         for cell in row:
             raw = cell.split()
@@ -69,7 +72,7 @@ class PerformanceTableParser(TableParserInterface):
 
         return data
 
-    def _parse_table_row(self, header:list, row) -> dict:
+    def _parse_table_row(self, header:list, row) -> None:
         
         result = []
         
@@ -91,4 +94,8 @@ class PerformanceTableParser(TableParserInterface):
             
         
         # create a PerformanceMatrixRow here
-        return {label:result}
+        
+        self._perf_matrix.add_row(
+            name=label,
+            row=self._perf_matrix_row_factory(data=result)
+        )

@@ -51,8 +51,7 @@ class Container(containers.DeclarativeContainer):
     )
     
     perf_matrix_factory = providers.Factory(
-        PerformanceMatrix,
-        columns=config.post_processor.performance.columns
+        PerformanceMatrix
     )
 
     perf_table_parser = providers.Factory(
