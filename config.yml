@@ -37,6 +37,8 @@ report:
     - MS ratings
     - Price
     - Colour
+    - cumulative_perf_5
+    - cumulative_perf_3
     - Year
     - Year-1
     - Year-2
