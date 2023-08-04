@@ -2,15 +2,25 @@ from typing import Callable
 
 from aviva_pensions.parsers.table_parser_interface import TableParserInterface
 from aviva_pensions.parsers.performance_matrix import PerformanceMatrix
+from aviva_pensions.parsers.performance_matrix_row import PerformanceMatrixRow
 from aviva_pensions.parsers.name_parser import NameParser
 
 class PerformanceTableParser(TableParserInterface):
     
-    def __init__(self, name_parser:NameParser, perf_matrix_parser_factory:Callable[..., PerformanceMatrix]) -> None:
+    def __init__(
+        self, 
+        name_parser:NameParser, 
+        perf_matrix_factory:Callable[..., PerformanceMatrix],
+        perf_matrix_row_factory:Callable[..., PerformanceMatrixRow]
+    ) -> None:
         super().__init__()
+        
+        # store each row in a PerformanceMatrix instance
         self._data = {}
+        
         self._name_parser = name_parser
-        self._perf_matrix_parser_factory = perf_matrix_parser_factory
+        self._perf_matrix_factory = perf_matrix_factory
+        self._perf_matrix_row_factory = perf_matrix_row_factory
         
         self._data_keys = {
             'Fund (%)' : 'fund',
@@ -26,7 +36,7 @@ class PerformanceTableParser(TableParserInterface):
         return self._data
     
     def get_values(self) -> dict:
-        return { self.get_name() :  self._perf_matrix_parser_factory(data=self._data)}
+        return { self.get_name() :  self._perf_matrix_factory(data=self._data)}
     
     def read_table(self, num, table) -> None:
         # return a dict of dicts
@@ -80,4 +90,5 @@ class PerformanceTableParser(TableParserInterface):
             result.append(row_dict)
             
         
+        # create a PerformanceMatrixRow here
         return {label:result}

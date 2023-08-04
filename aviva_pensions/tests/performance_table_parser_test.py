@@ -25,11 +25,13 @@ class PerformanceTableParserTest(unittest.TestCase):
         name_parser = Mock()
         name_parser.parse_label = makeFakeMethod()
         
-        perf_table_matrix_factory = Mock()
+        perf_matrix_factory = Mock()
+        perf_matrix_row_factory = Mock()
         
         perf_table_parser = PerformanceTableParser(
             name_parser=name_parser, 
-            perf_matrix_parser_factory=perf_table_matrix_factory
+            perf_matrix_factory=perf_matrix_factory,
+            perf_matrix_row_factory=perf_matrix_row_factory
         )
         
         perf_table_parser.read_table(num=0, table=table)

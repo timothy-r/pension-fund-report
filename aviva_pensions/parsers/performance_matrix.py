@@ -1,3 +1,4 @@
+from aviva_pensions.parsers.performance_matrix_row import PerformanceMatrixRow
 
 """
     A matrix of PerformanceMatrixRow instances
@@ -7,6 +8,7 @@ class PerformanceMatrix:
     def __init__(self, columns:list[str], data:dict) -> None:
     
         self._year_keys = columns
+        
         self._data = data
         
         # keys should be mapped by the parser
@@ -16,6 +18,12 @@ class PerformanceMatrix:
             'sector_ave' : 'Sector Average (%)',
             'quart_rank_in_sector' : 'Quartile rank within sector'
         }
+    
+    """
+        incrementally add rows to the matrix
+    """
+    def add_row(self, row: PerformanceMatrixRow) -> None:
+        pass
     
     """
         calculate the fund to benchmark value
