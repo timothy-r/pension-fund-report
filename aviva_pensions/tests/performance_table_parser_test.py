@@ -1,5 +1,6 @@
 import unittest
 from unittest.mock import Mock
+from aviva_pensions.container import Container
 
 from aviva_pensions.parsers.performance_table_parser import PerformanceTableParser
 
@@ -21,18 +22,21 @@ class PerformanceTableParserTest(unittest.TestCase):
         table.append(row_1)
         table.append(row_2)
 
+        container = Container()
+        perf_table_parser = container.perf_table_parser()
+        
         # simplify the test by getting the name parser to echo back its input
-        name_parser = Mock()
-        name_parser.parse_label = makeFakeMethod()
+        # name_parser = Mock()
+        # name_parser.parse_label = makeFakeMethod()
         
-        perf_matrix_factory = Mock()
-        perf_matrix_row_factory = Mock()
+        # perf_matrix_factory = Mock()
+        # perf_matrix_row_factory = Mock()
         
-        perf_table_parser = PerformanceTableParser(
-            name_parser=name_parser, 
-            perf_matrix_factory=perf_matrix_factory,
-            perf_matrix_row_factory=perf_matrix_row_factory
-        )
+        # perf_table_parser = PerformanceTableParser(
+        #     name_parser=name_parser, 
+        #     perf_matrix_factory=perf_matrix_factory,
+        #     perf_matrix_row_factory=perf_matrix_row_factory
+        # )
         
         perf_table_parser.read_table(num=0, table=table)
         
