@@ -89,11 +89,16 @@ class PerformanceTableParser(TableParserInterface):
         for i in range(1, len(header)):
             row_dict = {}
             row_dict['date'] = header[i]
-            row_dict['value'] = float(row[i])
+            # not always numeric values
+            try:
+                row_dict['value'] = float(row[i])
+            except:
+                row_dict['value'] = None
+                
             result.append(row_dict)
             
         
-        # create a PerformanceMatrixRow here
+        # create a PerformanceMatrixRow here & add to the PerformanceMatrix
         
         self._perf_matrix.add_row(
             name=label,
