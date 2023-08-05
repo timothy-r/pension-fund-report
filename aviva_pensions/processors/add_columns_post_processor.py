@@ -38,11 +38,12 @@ class AddColumnsPostProcessor(PostProcessorInterface):
         
         if id in self._source_data:
             
-            data_row = self._source_data[id]
+            source_data_row = self._source_data[id]
             
             for col in self._columns:
-                if col in data_row:
-                    row[col] = data_row[col]
+                if col in source_data_row:
+                    if col in row and row[col] == '':
+                        row[col] = source_data_row[col]
                 else:
                     row[col] = ''
         else:

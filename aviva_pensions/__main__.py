@@ -16,19 +16,19 @@ def main(
     
     # read all pdfs from directory
     for result in pdf_extractor.read_directory(dir):
-    
-        # post-process results - generate insights
-        result = post_processor.process(data=result)
         
-        # print out the report
-        report_writer.write_data(data=result)
+        if result:
+            # post-process results - generate insights
+            result = post_processor.process(data=result)
+        
+            # print out the report
+            report_writer.write_data(data=result)
 
 
 if __name__ == "__main__":
     
     container = Container()
     # override config.report.outfile with argv[2] if set
-    
     if len(sys.argv) > 2:
         outfile = sys.argv[2]
         
