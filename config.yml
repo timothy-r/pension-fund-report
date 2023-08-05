@@ -29,6 +29,7 @@ report:
   columns:
     - Name
     - ISIN Code
+    - date
     - risk
     - fund_to_benchmark_ave
     - fund_to_sector_ave

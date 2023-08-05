@@ -13,6 +13,7 @@ from aviva_pensions.parsers.name_parser import NameParser
 from aviva_pensions.parsers.performance_table_parser import PerformanceTableParser
 from aviva_pensions.parsers.performance_matrix import PerformanceMatrix
 from aviva_pensions.parsers.performance_matrix_row import PerformanceMatrixRow
+from aviva_pensions.parsers.report_date_parser import ReportDateParser
 
 from aviva_pensions.processors.performance_post_processor import PerformancePostProcessor
 from aviva_pensions.processors.add_columns_post_processor import AddColumnsPostProcessor
@@ -43,6 +44,10 @@ class Container(containers.DeclarativeContainer):
     basic_table_parser = providers.Factory(
         BasicTableParser,
         name_parser=name_parser
+    )
+    
+    report_date_parser = providers.Factory(
+        ReportDateParser
     )
     
     perf_matrix_row_factory = providers.Factory(
@@ -111,7 +116,8 @@ class Container(containers.DeclarativeContainer):
     )
     
     text_parsers = providers.List(
-        risks_parser
+        risks_parser,
+        report_date_parser
     )
     
     table_parsers = providers.List(
