@@ -2,7 +2,7 @@ from pathlib import Path
 import pdfplumber
 from typing import Callable, List
 
-from aviva_pensions.services.plumber import Plumber
+from aviva_pensions.services.pdf_reader import PDFReader
 
 """
     iterates recursively through a directory
@@ -10,15 +10,15 @@ from aviva_pensions.services.plumber import Plumber
 """
 class PDFExtractorService:
     
-    def __init__(self, plumber_factory:Callable[..., Plumber]) -> None:
-        self._plumber_factory = plumber_factory
+    def __init__(self, plumber_factory:Callable[..., PDFReader]) -> None:
+        self.__plumber_factory = plumber_factory
         
     def read_directory(self, dir: str) -> None:
         
-        for file in self._get_dir_pdfs(dir=dir):
-            yield self._read_pdf(file)
+        for file in self.__get_dir_pdfs(dir=dir):
+            yield self.__read_pdf(file)
             
-    def _get_dir_pdfs(self, dir) -> list:
+    def __get_dir_pdfs(self, dir) -> list:
         
         result = []
         
@@ -27,18 +27,18 @@ class PDFExtractorService:
             if file.is_file() and file.match('*.pdf'):
                 result.append(file)
             elif file.is_dir():
-                result += self._get_dir_pdfs(file)
+                result += self.__get_dir_pdfs(file)
     
         return result
     
-    def _read_pdf(self, file) -> dict:
+    def __read_pdf(self, file) -> dict:
         
         try:
             print("Reading {}".format(file))
             
             with pdfplumber.open(file) as pdf:
                 # create a new instance of the plumber each time
-                plumber = self._plumber_factory()
+                plumber = self.__plumber_factory()
                 plumber.read(file_name=file, pdf=pdf)
                 
                 return plumber.get_data()

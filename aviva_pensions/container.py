@@ -2,7 +2,7 @@ from dependency_injector import containers, providers
 
 
 from aviva_pensions.services.pdf_extractor_service import PDFExtractorService
-from aviva_pensions.services.plumber import Plumber
+from aviva_pensions.services.pdf_reader import PDFReader
 from aviva_pensions.services.report_writer import ReportWriter
 from aviva_pensions.services.post_processor_service import PostProcessorService
 
@@ -132,7 +132,7 @@ class Container(containers.DeclarativeContainer):
     )
     
     plumber = providers.Factory(
-        Plumber,
+        PDFReader,
         char_stream_parsers = char_stream_parsers,
         text_parsers = text_parsers,
         table_parsers = table_parsers,

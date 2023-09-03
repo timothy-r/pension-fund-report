@@ -7,7 +7,7 @@ from aviva_pensions.parsers.table_parser_interface import TableParserInterface
     Orchestrates reading data from a PDF
     Calls its configured parsers to read the data
 """
-class Plumber:
+class PDFReader:
     
     def __init__(
         self, 
@@ -17,79 +17,75 @@ class Plumber:
         file_name_parser: NameParser
     ) -> None:
         
-        self._char_stream_parsers = char_stream_parsers
-        self._text_parsers = text_parsers
-        self._table_parsers = table_parsers
-        self._file_name_parser = file_name_parser
-        self._num_tables = 0
+        self.__char_stream_parsers = char_stream_parsers
+        self.__text_parsers = text_parsers
+        self.__table_parsers = table_parsers
+        self.__file_name_parser = file_name_parser
+        self.__num_tables = 0
         
     """ 
         class to extract table data as key values from PDF pages
     """    
     def read(self, file_name:str, pdf) -> None:
         
-        self._file_name = file_name.name
-        self._pdf = pdf
-        self._text = ''
-        self._num_tables = 0
+        self.__file_name = file_name.name
+        self.__pdf = pdf
+        self.__text = ''
+        self.__num_tables = 0
         
         # parse table data
-        self._parse_pages()
+        self.__parse_pages()
     
     def get_data(self):
         
         results = { 
-            "Name": self._file_name_parser.parse_file_name(self._file_name),
-            "FileName": self._file_name
+            "Name": self.__file_name_parser.parse_file_name(self.__file_name),
+            "FileName": self.__file_name
         }
         
-        for parser in self._table_parsers:
+        for parser in self.__table_parsers:
             results |= parser.get_values()
         
-        for parser in self._char_stream_parsers:
+        for parser in self.__char_stream_parsers:
             results |= parser.get_values()
         
-        for parser in self._text_parsers:
-            results |= parser.get_values(self._text)
+        for parser in self.__text_parsers:
+            results |= parser.get_values(self.__text)
             
         return results
     
-    def _parse_pages(self) -> None:
-        total_pages = len(self._pdf.pages)
-        # print("pages: {}".format(total_pages))
+    def __parse_pages(self) -> None:
+        total_pages = len(self.__pdf.pages)
         
         for p in range(0, total_pages-1):
-            # print("page: {}".format(p))
             
-            page = self._pdf.pages[p]
+            page = self.__pdf.pages[p]
             
-            self._parse_page_tables(page)
-            self._text += self._parse_page_text(page)
+            self.__parse_page_tables(page)
+            self.__text += self.__parse_page_text(page)
             
-    def _parse_page_text(self, page) -> None:
+    def __parse_page_text(self, page) -> None:
         text = []
         for char in page.chars:
             text.append(char['text'])
 
-            for parser in self._char_stream_parsers:
+            for parser in self.__char_stream_parsers:
                 parser.add_char(char=char)
         
         return ''.join(text)
         
             
-    def _parse_page_tables(self, page) -> None:
+    def __parse_page_tables(self, page) -> None:
         
         page_tables = page.extract_tables(
             table_settings = { } 
         )
         
         total_tables = len(page_tables)
-        # print("tables: {}".format(total_tables))
         
         for t in range(0, total_tables-1):
-            # print("table: {}".format(page_tables[t]))
             
-            self._num_tables += 1
+            self.__num_tables += 1
             
-            for parser in self._table_parsers:
-                parser.read_table(self._num_tables, page_tables[t])
+            for parser in self.__table_parsers:
+                parser.read_table(self.__num_tables, page_tables[t])
