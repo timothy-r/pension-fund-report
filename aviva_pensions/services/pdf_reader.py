@@ -29,12 +29,11 @@ class PDFReader:
     def read(self, file_name:str, pdf) -> None:
         
         self.__file_name = file_name.name
-        self.__pdf = pdf
         self.__text = ''
         self.__num_tables = 0
         
         # parse table data
-        self.__parse_pages()
+        self.__parse_pages(pdf)
     
     def get_data(self):
         
@@ -54,12 +53,12 @@ class PDFReader:
             
         return results
     
-    def __parse_pages(self) -> None:
-        total_pages = len(self.__pdf.pages)
+    def __parse_pages(self, pdf) -> None:
+        total_pages = len(pdf.pages)
         
         for p in range(0, total_pages-1):
             
-            page = self.__pdf.pages[p]
+            page = pdf.pages[p]
             
             self.__parse_page_tables(page)
             self.__text += self.__parse_page_text(page)

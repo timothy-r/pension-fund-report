@@ -12,7 +12,9 @@ class PerformancePostProcessor(PostProcessorInterface):
     """
     def process(self, row: dict) -> dict:
         
-        """ ensure these keys are set with defalu values """
+        """ 
+            ensure these keys are set with default values 
+        """
         row['fund_to_benchmark_ave'] = ''
         row['fund_to_sector_ave'] = ''
         for key in self._year_keys:

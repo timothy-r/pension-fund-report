@@ -36,18 +36,18 @@ class AddPricesChargesPostProcessor(PostProcessorInterface):
         
         if id in self._source_data:
             
-            data_row = self._source_data[id]
+            source_data_row = self._source_data[id]
             
             for col in self._columns:
                 
-                if col in data_row:
+                if col in source_data_row:
                 
                     # don't overwrite cols with values
                     if col in row:
                         if row[col] == '':
-                            row[col] = data_row[col]
+                            row[col] = source_data_row[col]
                     else:
-                        row[col] = data_row[col]
+                        row[col] = source_data_row[col]
                 
         else:
             print("id '{}' not found in source data".format(id))
