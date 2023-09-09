@@ -1,0 +1,9 @@
+<a 
+    id="memberDashboard_form_id:j_idt326:0:memberFundAndUnitPrices_fundClassificationDetailsList_id:0:link_openFundFactSheet_fundName_id" 
+    href="#" 
+    title="View Fund Fact Sheet of Av abrdn Global Absolute Return Strategies (in a new window)" 
+    onclick="jsf.util.chain(this,event,'openInNewTab(\'http://www.fundslibrary.co.uk/fundslibrary.dataretrieval/documents.aspx?user=Aviva_lifecust&type=packet_lp_fund_unit_doc_factsheet&citicode=HUA1\');','mojarra.ab(this,event,\'action\',0,\'@none\',{\'onevent\':redirectToLocation})');return false" 
+    class="link-color"
+>
+    Av abrdn Global Absolute Return Strategies &#x28;0.98&#x25; Annual Management Charge&#x29;
+    </a>
