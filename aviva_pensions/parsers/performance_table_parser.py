@@ -5,6 +5,9 @@ from aviva_pensions.parsers.performance_matrix import PerformanceMatrix
 from aviva_pensions.parsers.performance_matrix_row import PerformanceMatrixRow
 from aviva_pensions.parsers.name_parser import NameParser
 
+"""
+    Extracts fund performance from a PDF table 
+"""
 class PerformanceTableParser(TableParserInterface):
     
     def __init__(
@@ -16,16 +19,15 @@ class PerformanceTableParser(TableParserInterface):
         
         super().__init__()
         
-        # store each row in a PerformanceMatrix instance
-        self._data = {}
+        # store the table in a PerformanceMatrix instance
+        self.__data = {}
         
-        self._name_parser = name_parser
-        self._perf_matrix = perf_matrix_factory()
+        self.__name_parser = name_parser
+        self.__perf_matrix = perf_matrix_factory()
         
-        # self._perf_matrix_factory = perf_matrix_factory
-        self._perf_matrix_row_factory = perf_matrix_row_factory
+        self.__perf_matrix_row_factory = perf_matrix_row_factory
         
-        self._data_keys = {
+        self.__data_keys = {
             'Fund (%)' : 'fund',
             'Bench- mark (%)' : 'benchmark',
             'Sector Average (%)' : 'sector_ave',
@@ -36,10 +38,10 @@ class PerformanceTableParser(TableParserInterface):
         return 'performance'
     
     def get_data(self) -> dict:
-        return self._data
+        return self.__data
     
     def get_values(self) -> dict:
-        return { self.get_name() :  self._perf_matrix}
+        return { self.get_name() :  self.__perf_matrix}
     
     def read_table(self, num, table) -> None:
         # return a dict of dicts
@@ -65,7 +67,7 @@ class PerformanceTableParser(TableParserInterface):
         for cell in row:
             raw = cell.split()
             label = ' '.join(raw)
-            value = self._name_parser.parse_label(label)
+            value = self.__name_parser.parse_label(label)
             # spilt & use the last date in the label
             value = value.split(' ')[-1]
             data.append(value)
@@ -79,11 +81,11 @@ class PerformanceTableParser(TableParserInterface):
         # first item is the row label
         cell = row[0].split()
         label = ' '.join(cell)
-        label = self._name_parser.parse_label(label)
+        label = self.__name_parser.parse_label(label)
         
         # map label from pdf to the internal label name
-        if label in self._data_keys:
-            label = self._data_keys[label]
+        if label in self.__data_keys:
+            label = self.__data_keys[label]
         
         
         for i in range(1, len(header)):
@@ -99,8 +101,9 @@ class PerformanceTableParser(TableParserInterface):
             
         
         # create a PerformanceMatrixRow here & add to the PerformanceMatrix
+        row = self.__perf_matrix_row_factory(data=result)
         
-        self._perf_matrix.add_row(
+        self.__perf_matrix.add_row(
             name=label,
-            row=self._perf_matrix_row_factory(data=result)
+            row=row
         )

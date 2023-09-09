@@ -5,14 +5,14 @@ class BasicTableParser(TableParserInterface):
     
     def __init__(self, name_parser:NameParser) -> None:
         super().__init__()
-        self._data = {}
-        self._name_parser = name_parser
+        self.__data = {}
+        self.__name_parser = name_parser
         
     def get_name(self) -> str:
         return 'basic'
     
     def get_values(self) -> dict:
-        return self._data
+        return self.__data
     
     def read_table(self, num, table) -> None:
         
@@ -27,7 +27,7 @@ class BasicTableParser(TableParserInterface):
                 cell = row[0].split()
                 label = ' '.join(cell[:-1])
                 
-                label = self._name_parser.parse_label(label)
+                label = self.__name_parser.parse_label(label)
                 
                 if label != '':
                     try:
@@ -35,4 +35,4 @@ class BasicTableParser(TableParserInterface):
                     except IndexError:
                         data[label] = ''
                     
-        self._data = self._data | data 
+        self.__data = self.__data | data 
