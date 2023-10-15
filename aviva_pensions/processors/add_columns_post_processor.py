@@ -2,10 +2,11 @@ from aviva_pensions.processors.post_processor_interface import PostProcessorInte
 
 from aviva_pensions.readers.data_provider_interface import DataProviderInterface
 
-"""
-    Add columns from another csv to the report
-"""
+
 class AddColumnsPostProcessor(PostProcessorInterface):
+    """
+        Add columns from another csv to the report
+    """
 
     def __init__(self, key:str, columns:list[str], data_provider:DataProviderInterface) -> None:
         self._columns = columns
@@ -13,12 +14,12 @@ class AddColumnsPostProcessor(PostProcessorInterface):
         self._source_data = {}
         self._key_name = key
 
-    """
-        add named columns from source csv to the data
-        keyed on sedol
-    """
-    def process(self, row: dict) -> dict:
 
+    def process(self, row: dict) -> dict:
+        """
+            add named columns from source csv to the data
+            keyed on sedol
+        """
         if len(self._source_data) == 0:
             self._source_data = self._data_provider.read_data()
 

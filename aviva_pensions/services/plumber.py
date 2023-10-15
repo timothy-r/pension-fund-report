@@ -3,12 +3,12 @@ from aviva_pensions.parsers.char_stream_parser_interface import CharStreamParser
 from aviva_pensions.parsers.text_parser_interface import TextParserInterface
 from aviva_pensions.parsers.table_parser_interface import TableParserInterface
 
-"""
-    Orchestrates reading data from a PDF
-    Calls its configured parsers to read the data
-"""
-class Plumber:
 
+class Plumber:
+    """
+        Orchestrates reading data from a PDF
+        Calls its configured parsers to read the data
+    """
     def __init__(
         self,
         char_stream_parsers:list[CharStreamParserInterface],
@@ -23,11 +23,9 @@ class Plumber:
         self._file_name_parser = file_name_parser
         self._num_tables = 0
 
-    """
-        class to extract table data as key values from PDF pages
-    """
-    def read(self, file_name:str, pdf) -> None:
 
+    def read(self, file_name:str, pdf) -> None:
+        """  class to extract table data as key values from PDF pages """
         self._file_name = file_name.name
         self._pdf = pdf
         self._text = ''

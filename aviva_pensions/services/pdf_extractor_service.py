@@ -3,14 +3,13 @@ from typing import Callable, List
 
 import pdfplumber
 
-
 from aviva_pensions.services.plumber import Plumber
 
-"""
-    iterates recursively through a directory
-    reads all pdfs found
-"""
 class PDFExtractorService:
+    """
+        iterates recursively through a directory
+        reads all pdfs found
+    """
 
     def __init__(self, plumber_factory:Callable[..., Plumber]) -> None:
         self._plumber_factory = plumber_factory
