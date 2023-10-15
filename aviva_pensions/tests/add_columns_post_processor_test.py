@@ -17,10 +17,10 @@ class AddColumnsPostProcessorTest(unittest.TestCase):
         ]
 
         data_provider = ListToDictDataProvider(key=key, reader=data)
-        self._processor = AddColumnsPostProcessor(key=key, columns=cols,data_provider=data_provider)
+        _processor = AddColumnsPostProcessor(key=key, columns=cols,data_provider=data_provider)
 
         row = {'SEDOL':'B5M9Z37'}
-        results = self._processor.process(row=row)
+        results = _processor.process(row=row)
 
         self.assertTrue(4 == len(results))
         self.assertTrue('B5M9Z37' == results['SEDOL'])
@@ -38,10 +38,10 @@ class AddColumnsPostProcessorTest(unittest.TestCase):
 
         data_provider = ListToDictDataProvider(key=key, reader=data)
 
-        self._processor = AddColumnsPostProcessor(key=key, columns=cols,data_provider=data_provider)
+        _processor = AddColumnsPostProcessor(key=key, columns=cols,data_provider=data_provider)
 
         row = {'SEDOL':'03346251'}
-        results = self._processor.process(row=row)
+        results = _processor.process(row=row)
 
         self.assertTrue(4 == len(results))
         self.assertTrue('03346251' == results['SEDOL'])
@@ -59,10 +59,10 @@ class AddColumnsPostProcessorTest(unittest.TestCase):
 
         data_provider = ListToDictDataProvider(key=key, reader=data)
 
-        self._processor = AddColumnsPostProcessor(key=key, columns=cols,data_provider=data_provider)
+        _processor = AddColumnsPostProcessor(key=key, columns=cols,data_provider=data_provider)
 
         row = {'SEDOL':'0123456'}
-        results = self._processor.process(row=row)
+        results = _processor.process(row=row)
 
         self.assertTrue(4 == len(results))
         self.assertTrue('0123456' == results['SEDOL'])
