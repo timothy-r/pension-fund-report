@@ -5,13 +5,17 @@ from aviva_pensions.container import Container
 from aviva_pensions.parsers.performance_matrix import PerformanceMatrix
 from aviva_pensions.tests.test_data_provider import TestDataProvider
 class PerformanceMatrixTest(unittest.TestCase):
-
+    """
+        Tests PerformanceMatrix class
+    """
     def setUp(self) -> None:
         super().setUp()
         self._container = Container()
 
         # some data has the word To between the 2 dates
-        self._cols = ['30/06/18 To 30/06/19', '30/06/19 30/06/20', '30/06/20 To 30/06/21', '30/06/21 30/06/22', '30/06/22 30/06/23']
+        self._cols = ['30/06/18 To 30/06/19', '30/06/19 30/06/20',
+         '30/06/20 To 30/06/21', '30/06/21 30/06/22',
+         '30/06/22 30/06/23']
         self._matrix_cols = ["Year", "Year-1", "Year-2", "Year-3", "Year-4"]
         self._test_data_provider = TestDataProvider()
 
@@ -176,7 +180,10 @@ class PerformanceMatrixTest(unittest.TestCase):
 
             if key in data:
                 if len(cols) > 0:
-                    row_data = self._test_data_provider.get_test_matrix_row_data(data[key], param_dates=cols)
+                    row_data = self._test_data_provider.get_test_matrix_row_data(
+                        data[key],
+                        param_dates=cols
+                    )
                 else:
                     row_data = self._test_data_provider.get_test_matrix_row_data(data[key])
 
