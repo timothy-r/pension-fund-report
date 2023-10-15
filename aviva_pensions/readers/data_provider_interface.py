@@ -2,6 +2,6 @@ import abc
 
 class DataProviderInterface:
 
-    @abc.abstractmethod    
+    @abc.abstractmethod
     def read_data(self) -> dict:
         pass
