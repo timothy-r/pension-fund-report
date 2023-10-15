@@ -26,28 +26,37 @@ class AddColumnsPostProcessor(PostProcessorInterface):
         # if the key is not in the input then add empty columns
         if not self._key_name in row:
             print("key {} not found in {}".format(self._key_name, row))
-            for col in self._columns:
-                row[col] = ''
+            row = self._add_empty_cols(row=row)
             return row
 
         # get the id to read from the data source
-        id = str(row[self._key_name])
+        key = str(row[self._key_name])
 
         # remove leading 0s from the ids
-        if id[0] == '0':
-            id = str(int(id))
+        if key[0] == '0':
+            key = str(int(key))
 
-        if id in self._source_data:
+        if key in self._source_data:
 
-            source_data_row = self._source_data[id]
+            source_data_row = self._source_data[key]
 
             for col in self._columns:
                 if col in source_data_row:
                     if col in row and row[col] == '':
                         row[col] = source_data_row[col]
+                    else:
+                        row[col] = source_data_row[col]
                 else:
                     row[col] = ''
         else:
-            print("id {}\n not found in {}".format(id, self._source_data.keys()))
+            row = self._add_empty_cols(row=row)
+            print("id {}\n not found in {}".format(key, self._source_data.keys()))
 
+        return row
+
+    def _add_empty_cols(self, row:dict) -> dict:
+        """ fill out the parameter dict with all the configured col names and empty values
+        """
+        for col in self._columns:
+                row[col] = ''
         return row
