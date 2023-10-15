@@ -6,16 +6,19 @@ from aviva_pensions.services.pdf_extractor_service import PDFExtractorService
 from aviva_pensions.services.report_writer import ReportWriter
 from aviva_pensions.services.post_processor_service import PostProcessorService
 
+"""
+    run the commands
+"""
 @inject
 def main(
-    dir:str,
+    src_dir:str,
     pdf_extractor: PDFExtractorService = Provide[Container.pdf_extractor_service],
     post_processor: PostProcessorService = Provide[Container.post_processor_service],
     report_writer: ReportWriter = Provide[Container.report_writer]
 ) -> None:
 
     # read all pdfs from directory
-    for result in pdf_extractor.read_directory(dir):
+    for result in pdf_extractor.read_directory(src_dir):
 
         if result:
             # post-process results - generate insights
