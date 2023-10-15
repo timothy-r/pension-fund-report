@@ -58,5 +58,5 @@ class AddColumnsPostProcessor(PostProcessorInterface):
         """ fill out the parameter dict with all the configured col names and empty values
         """
         for col in self._columns:
-                row[col] = ''
+            row[col] = ''
         return row

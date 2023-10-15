@@ -48,12 +48,12 @@ class PerformancePostProcessor(PostProcessorInterface):
 
         try:
             row['cumulative_perf_5'] = performance_matrix.fund_cumulative_performance(5)
-        except:
+        except ValueError:
             pass
 
         try:
             row['cumulative_perf_3'] = performance_matrix.fund_cumulative_performance(3)
-        except:
+        except ValueError:
             pass
 
         return row
