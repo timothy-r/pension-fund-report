@@ -23,6 +23,6 @@ jobs:
 
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        pylint --extension-pkg-allow-list=dependency_injector $(git ls-files '*.py')
       working-directory: ./aviva_pensions
 
