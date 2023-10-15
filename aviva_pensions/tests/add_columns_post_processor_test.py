@@ -69,3 +69,6 @@ class AddColumnsPostProcessorTest(unittest.TestCase):
         self.assertTrue('' == results['Charge'])
         self.assertTrue('' == results['MS ratings'])
         self.assertTrue('' == results['FT ratings'])
+
+if __name__ == '__main__':
+    unittest.main()
