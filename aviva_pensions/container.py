@@ -24,13 +24,13 @@ from aviva_pensions.readers.list_to_dict_data_provider import ListToDictDataProv
 from aviva_pensions.readers.extract_prices_charges_data_provider import ExtractPricesChargesDataProvider
 
 class Container(containers.DeclarativeContainer):
-    
+
     config = providers.Configuration(yaml_files=["./config.yml"])
-    
+
     name_parser = providers.Factory(
         NameParser
     )
-        
+
     # define the plugins so that each plumber instance gets new plugin instances
     risk_parser = providers.Factory(
         RiskParser
@@ -40,21 +40,21 @@ class Container(containers.DeclarativeContainer):
         RisksParser,
         names=config.risks.names
     )
-    
+
     basic_table_parser = providers.Factory(
         BasicTableParser,
         name_parser=name_parser
     )
-    
+
     report_date_parser = providers.Factory(
         ReportDateParser
     )
-    
+
     perf_matrix_row_factory = providers.Factory(
         PerformanceMatrixRow,
         year_cols=config.post_processor.performance.columns
     )
-    
+
     perf_matrix_factory = providers.Factory(
         PerformanceMatrix
     )
@@ -65,72 +65,72 @@ class Container(containers.DeclarativeContainer):
         perf_matrix_factory=perf_matrix_factory.provider,
         perf_matrix_row_factory=perf_matrix_row_factory.provider
     )
-    
+
     perf_post_processor = providers.Factory(
         PerformancePostProcessor,
         columns=config.post_processor.performance.columns
     )
-    
+
     add_columns_reader = providers.Factory(
         CSVDictReader,
         config.post_processor.add_columns.file,
         config.post_processor.add_columns.delim,
         config.post_processor.add_columns.encoding
     )
-    
+
     add_columns_data_provider = providers.Factory(
         ListToDictDataProvider,
         key=config.post_processor.add_columns.key,
         reader=add_columns_reader
     )
-    
+
     add_prices_reader = providers.Factory(
         CSVDictReader,
         config.post_processor.add_prices.file,
         config.post_processor.add_prices.delim,
         config.post_processor.add_prices.encoding
     )
-    
+
     add_prices_data_provider = providers.Factory(
         ExtractPricesChargesDataProvider,
         reader=add_prices_reader,
         name_parser=name_parser
     )
-    
+
     add_cols_post_processor = providers.Factory(
         AddColumnsPostProcessor,
         key=config.post_processor.add_columns.key,
         columns=config.post_processor.add_columns.columns,
         data_provider=add_columns_data_provider
     )
-    
+
     add_prices_post_processor = providers.Factory(
         AddPricesChargesPostProcessor,
         key=config.post_processor.add_prices.key,
         columns=config.post_processor.add_prices.columns,
         data_provider=add_prices_data_provider
     )
-        
+
     char_stream_parsers=providers.List(
         risk_parser
     )
-    
+
     text_parsers = providers.List(
         risks_parser,
         report_date_parser
     )
-    
+
     table_parsers = providers.List(
         basic_table_parser,
         perf_table_parser
     )
-    
+
     post_processors = providers.List(
         perf_post_processor,
         add_cols_post_processor,
         add_prices_post_processor
     )
-    
+
     plumber = providers.Factory(
         Plumber,
         char_stream_parsers = char_stream_parsers,
@@ -138,20 +138,19 @@ class Container(containers.DeclarativeContainer):
         table_parsers = table_parsers,
         file_name_parser = name_parser
     )
-    
+
     report_writer = providers.Singleton(
         ReportWriter,
         columns=config.report.columns,
         outfile=config.report.outfile
     )
-    
+
     pdf_extractor_service = providers.Singleton(
         PDFExtractorService,
         plumber.provider
     )
-    
+
     post_processor_service = providers.Singleton(
         PostProcessorService,
         post_processors = post_processors
     )
-    

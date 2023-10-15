@@ -1,1 +1,2 @@
 pdfplumber => 0.10.2
+dependency-injector => 4.39.1
