@@ -20,7 +20,7 @@ class RiskParser(CharStreamParserInterface):
 
         if char['text'] in ['1','2','3','4','5','6','7']:
 
-            if (len(self._chars) == (int(char['text']) -1)):
+            if (len(self._chars) == int(char['text']) -1):
                 self._chars.append(char)
                 if len(self._chars) == 7:
                     self._done = True

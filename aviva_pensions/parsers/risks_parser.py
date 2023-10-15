@@ -18,7 +18,7 @@ class RisksParser(TextParserInterface):
 
         for name in self._risk_names:
             result = re.search("{}Yes".format(name), text)
-            if (result != None):
+            if result != None:
                 values[name] = 'Yes'
             else:
                 values[name] = 'No'
