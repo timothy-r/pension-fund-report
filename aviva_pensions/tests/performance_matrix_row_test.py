@@ -20,7 +20,7 @@ class PerformanceMatrixRowTest(unittest.TestCase):
 
         result = row.cumulative_performance(5)
 
-        self.assertEquals(43.67, result)
+        self.assertEqual(43.67, result)
 
     def test_get_cumulative_performance_for_3_years(self)->None:
 
@@ -33,7 +33,7 @@ class PerformanceMatrixRowTest(unittest.TestCase):
 
         result = row.cumulative_performance(3)
 
-        self.assertEquals(-2.11, result)
+        self.assertEqual(-2.11, result)
 
     def test_get_cumulative_performance_for_1_year(self)->None:
 
@@ -45,7 +45,7 @@ class PerformanceMatrixRowTest(unittest.TestCase):
 
         result = row.cumulative_performance(1)
 
-        self.assertEquals(16.9, result)
+        self.assertEqual(16.9, result)
 
 
     def test_cell_at(self) -> None:
@@ -55,8 +55,8 @@ class PerformanceMatrixRowTest(unittest.TestCase):
 
         row = PerformanceMatrixRow(year_cols=self._year_cols, data=test_data)
 
-        self.assertEquals(16.90, row.cell_at_date('30/06/23'))
-        self.assertEquals(-42.59, row.cell_at_date('30/06/22'))
+        self.assertEqual(16.90, row.cell_at_date('30/06/23'))
+        self.assertEqual(-42.59, row.cell_at_date('30/06/22'))
 
     def test_average_difference(self) -> None:
 
@@ -74,7 +74,7 @@ class PerformanceMatrixRowTest(unittest.TestCase):
 
         result = row.average_difference(other=other_row)
 
-        self.assertEquals(1, result)
+        self.assertEqual(1, result)
 
     def test_average_difference_2(self) -> None:
 
@@ -90,7 +90,7 @@ class PerformanceMatrixRowTest(unittest.TestCase):
 
         result = row.average_difference(other=other_row)
 
-        self.assertEquals(0.4, result)
+        self.assertEqual(0.4, result)
 
     def test_annual_performance(self) -> None:
         values = [16.90, -42.59, 45.86, 43.51, 2.27]
@@ -100,6 +100,6 @@ class PerformanceMatrixRowTest(unittest.TestCase):
         row = PerformanceMatrixRow(year_cols=self._year_cols, data=test_data)
 
         result = row.annual_performance()
-        self.assertEquals(16.90, result['Year']['value'])
-        self.assertEquals('30/06/23', result['Year']['date'])
+        self.assertEqual(16.90, result['Year']['value'])
+        self.assertEqual('30/06/23', result['Year']['date'])
 

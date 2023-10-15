@@ -24,7 +24,7 @@ class PerformanceMatrixTest(unittest.TestCase):
 
         result = matrix.fund_to_benchmark_average()
 
-        self.assertEquals(1, result)
+        self.assertEqual(1, result)
 
     def test_fund_to_benchmark_average_fund_lower(self):
         matrix = self._get_test_matrix({
@@ -34,7 +34,7 @@ class PerformanceMatrixTest(unittest.TestCase):
 
         result = matrix.fund_to_benchmark_average()
 
-        self.assertEquals(0, result)
+        self.assertEqual(0, result)
 
     def test_fund_to_benchmark_average_fund_60_percent(self):
         matrix = self._get_test_matrix({
@@ -44,14 +44,14 @@ class PerformanceMatrixTest(unittest.TestCase):
 
         result = matrix.fund_to_benchmark_average()
 
-        self.assertEquals(0.6, result)
+        self.assertEqual(0.6, result)
 
     def test_fund_to_benchmark_average_fund_validates_data(self):
         matrix = self._get_test_matrix({})
 
         result = matrix.fund_to_benchmark_average()
 
-        self.assertEquals(None, result)
+        self.assertEqual(None, result)
 
     def xtest_fund_to_benchmark_average_handles_strings(self):
         matrix = self._get_test_matrix({
@@ -61,13 +61,13 @@ class PerformanceMatrixTest(unittest.TestCase):
 
         result = matrix.fund_to_benchmark_average()
 
-        self.assertEquals(0, result)
+        self.assertEqual(0, result)
 
     def test_fund_to_sector_average_validates_data(self):
         matrix = self._get_test_matrix({})
         result = matrix.fund_to_benchmark_average()
 
-        self.assertEquals(None, result)
+        self.assertEqual(None, result)
 
     def test_fund_to_sector_average_fund_higher(self):
         matrix = self._get_test_matrix({
@@ -77,7 +77,7 @@ class PerformanceMatrixTest(unittest.TestCase):
 
         result = matrix.fund_to_sector_average()
 
-        self.assertEquals(1, result)
+        self.assertEqual(1, result)
 
     def test_fund_to_sector_average_fund_lower(self):
         matrix = self._get_test_matrix({
@@ -87,7 +87,7 @@ class PerformanceMatrixTest(unittest.TestCase):
 
         result = matrix.fund_to_sector_average()
 
-        self.assertEquals(0, result)
+        self.assertEqual(0, result)
 
     def test_fund_to_sector_average_fund_20_percent(self):
         matrix = self._get_test_matrix({
@@ -97,7 +97,7 @@ class PerformanceMatrixTest(unittest.TestCase):
 
         result = matrix.fund_to_sector_average()
 
-        self.assertEquals(0.2, result)
+        self.assertEqual(0.2, result)
 
     def xtest_fund_to_sector_average_handles_strings(self):
         matrix = self._get_test_matrix({
@@ -107,7 +107,7 @@ class PerformanceMatrixTest(unittest.TestCase):
 
         result = matrix.fund_to_sector_average()
 
-        self.assertEquals(0, result)
+        self.assertEqual(0, result)
 
     def test_get_fund_performance(self) -> None:
         matrix = self._get_test_matrix({
@@ -115,22 +115,22 @@ class PerformanceMatrixTest(unittest.TestCase):
         })
 
         result = matrix.fund_annual_performance()
-        self.assertEquals(5, len(result))
+        self.assertEqual(5, len(result))
 
-        self.assertEquals(5, result['Year']['value'])
-        self.assertEquals('30/06/23', result['Year']['date'])
+        self.assertEqual(5, result['Year']['value'])
+        self.assertEqual('30/06/23', result['Year']['date'])
 
-        self.assertEquals(4, result['Year-1']['value'])
-        self.assertEquals('30/06/22', result['Year-1']['date'])
+        self.assertEqual(4, result['Year-1']['value'])
+        self.assertEqual('30/06/22', result['Year-1']['date'])
 
-        self.assertEquals(3, result['Year-2']['value'])
-        self.assertEquals('30/06/21', result['Year-2']['date'])
+        self.assertEqual(3, result['Year-2']['value'])
+        self.assertEqual('30/06/21', result['Year-2']['date'])
 
-        self.assertEquals(2, result['Year-3']['value'])
-        self.assertEquals('30/06/20', result['Year-3']['date'])
+        self.assertEqual(2, result['Year-3']['value'])
+        self.assertEqual('30/06/20', result['Year-3']['date'])
 
-        self.assertEquals(1, result['Year-4']['value'])
-        self.assertEquals('30/06/19', result['Year-4']['date'])
+        self.assertEqual(1, result['Year-4']['value'])
+        self.assertEqual('30/06/19', result['Year-4']['date'])
 
     def test_get_fund_performance_orders_by_date(self) -> None:
 
@@ -142,23 +142,23 @@ class PerformanceMatrixTest(unittest.TestCase):
 
 
         result = matrix.fund_annual_performance()
-        self.assertEquals(5, len(result))
+        self.assertEqual(5, len(result))
 
         # test the values are correct
-        self.assertEquals(1, result['Year']['value'])
-        self.assertEquals('30/06/23', result['Year']['date'])
+        self.assertEqual(1, result['Year']['value'])
+        self.assertEqual('30/06/23', result['Year']['date'])
 
-        self.assertEquals(2, result['Year-1']['value'])
-        self.assertEquals('30/06/22', result['Year-1']['date'])
+        self.assertEqual(2, result['Year-1']['value'])
+        self.assertEqual('30/06/22', result['Year-1']['date'])
 
-        self.assertEquals(3, result['Year-2']['value'])
-        self.assertEquals('30/06/21', result['Year-2']['date'])
+        self.assertEqual(3, result['Year-2']['value'])
+        self.assertEqual('30/06/21', result['Year-2']['date'])
 
-        self.assertEquals(4, result['Year-3']['value'])
-        self.assertEquals('30/06/20', result['Year-3']['date'])
+        self.assertEqual(4, result['Year-3']['value'])
+        self.assertEqual('30/06/20', result['Year-3']['date'])
 
-        self.assertEquals(5, result['Year-4']['value'])
-        self.assertEquals('30/06/19', result['Year-4']['date'])
+        self.assertEqual(5, result['Year-4']['value'])
+        self.assertEqual('30/06/19', result['Year-4']['date'])
 
     def test_fund_cumulative_performance_5_years(self) -> None:
         matrix = self._get_test_matrix({
@@ -166,7 +166,7 @@ class PerformanceMatrixTest(unittest.TestCase):
         })
 
         result = matrix.fund_cumulative_performance(5)
-        self.assertEquals(31.76, result)
+        self.assertEqual(31.76, result)
 
     def _get_test_matrix(self, data:dict, cols:list=[]):
 

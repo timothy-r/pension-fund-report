@@ -15,7 +15,7 @@ class RiskParserTest(unittest.TestCase):
             self._parser.add_char(char=char)
 
         result = self._parser.get_values()
-        self.assertEquals({'risk': risk}, result)
+        self.assertEqual({'risk': risk}, result)
 
     def test_parse_risk_from_many_chars(self) -> None:
         risk = '3'
@@ -24,7 +24,7 @@ class RiskParserTest(unittest.TestCase):
             self._parser.add_char(char=char)
 
         result = self._parser.get_values()
-        self.assertEquals({'risk': risk}, result)
+        self.assertEqual({'risk': risk}, result)
 
     def test_parse_risk_from_many_digits(self) -> None:
         risk = '7'
@@ -33,7 +33,7 @@ class RiskParserTest(unittest.TestCase):
             self._parser.add_char(char=char)
 
         result = self._parser.get_values()
-        self.assertEquals({'risk': risk}, result)
+        self.assertEqual({'risk': risk}, result)
 
     def test_parse_risk_without_selecton(self) -> None:
         risk = '0'
@@ -42,7 +42,7 @@ class RiskParserTest(unittest.TestCase):
             self._parser.add_char(char=char)
 
         result = self._parser.get_values()
-        self.assertEquals({'risk': ''}, result)
+        self.assertEqual({'risk': ''}, result)
 
 
     def get_test_data(self, chars:list, risk:str) -> list:

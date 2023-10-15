@@ -39,7 +39,7 @@ class PerformanceTableParserTest(unittest.TestCase):
 
         self.assertIsInstance(matrix, PerformanceMatrix)
 
-        self.assertEquals(0.6, matrix.fund_to_benchmark_average())
+        self.assertEqual(0.6, matrix.fund_to_benchmark_average())
 
         expected_annual_perf = {
             'Year': {
@@ -49,4 +49,4 @@ class PerformanceTableParserTest(unittest.TestCase):
         }
 
         actual_annual_perf = matrix.fund_annual_performance()
-        self.assertEquals(expected_annual_perf["Year"], actual_annual_perf["Year"])
+        self.assertEqual(expected_annual_perf["Year"], actual_annual_perf["Year"])

@@ -22,5 +22,5 @@ class NameParserTest(unittest.TestCase):
 
         for i in range(0, len(raw)):
             result = parser.parse_label(raw[i])
-            self.assertEquals(expected[i], result)
+            self.assertEqual(expected[i], result)
 
