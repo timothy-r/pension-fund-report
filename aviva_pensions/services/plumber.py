@@ -21,18 +21,17 @@ class Plumber:
         self._text_parsers = text_parsers
         self._table_parsers = table_parsers
         self._file_name_parser = file_name_parser
-        self._num_tables = 0
+        self._file_name = ''
+        self._text = ''
 
 
     def read(self, file_name:str, pdf) -> None:
         """  class to extract table data as key values from PDF pages """
         self._file_name = file_name.name
-        self._pdf = pdf
         self._text = ''
-        self._num_tables = 0
 
         # parse table data
-        self._parse_pages()
+        self._parse_pages(pdf)
 
     def get_data(self):
 
@@ -52,14 +51,12 @@ class Plumber:
 
         return results
 
-    def _parse_pages(self) -> None:
-        total_pages = len(self._pdf.pages)
-        # print("pages: {}".format(total_pages))
+    def _parse_pages(self, pdf) -> None:
+        total_pages = len(pdf.pages)
 
-        for p in range(0, total_pages-1):
-            # print("page: {}".format(p))
+        for p in  range(0, total_pages-1):
 
-            page = self._pdf.pages[p]
+            page = pdf.pages[p]
 
             self._parse_page_tables(page)
             self._text += self._parse_page_text(page)
@@ -82,12 +79,8 @@ class Plumber:
         )
 
         total_tables = len(page_tables)
-        # print("tables: {}".format(total_tables))
 
         for t in range(0, total_tables-1):
-            # print("table: {}".format(page_tables[t]))
-
-            self._num_tables += 1
 
             for parser in self._table_parsers:
-                parser.read_table(self._num_tables, page_tables[t])
+                parser.read_table(t+1, page_tables[t])

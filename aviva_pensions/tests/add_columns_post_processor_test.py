@@ -17,7 +17,7 @@ class AddColumnsPostProcessorTest(unittest.TestCase):
         ]
 
         data_provider = ListToDictDataProvider(key=key, reader=data)
-        _processor = AddColumnsPostProcessor(key=key, columns=cols,data_provider=data_provider)
+        _processor = AddColumnsPostProcessor(key=key, columns=cols, data_provider=data_provider)
 
         row = {'SEDOL':'B5M9Z37'}
         results = _processor.process(row=row)
