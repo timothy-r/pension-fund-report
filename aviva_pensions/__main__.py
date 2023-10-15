@@ -1,3 +1,7 @@
+"""
+    run the commands
+"""
+
 import sys
 from dependency_injector.wiring import Provide, inject
 
@@ -6,9 +10,7 @@ from aviva_pensions.services.pdf_extractor_service import PDFExtractorService
 from aviva_pensions.services.report_writer import ReportWriter
 from aviva_pensions.services.post_processor_service import PostProcessorService
 
-"""
-    run the commands
-"""
+
 @inject
 def main(
     src_dir:str,
