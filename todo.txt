@@ -1,0 +1,74 @@
+* add sector
+
+[x] use the performance data to calculate basic metrics
+    [] fund > benchmark per year - for each year was the fund over the benchmark? / num of years
+        * every year higher? value = 1, 4 years out of 5? value = 0.8
+    [] fund > sector average per year
+
+[x] post processor service
+    * pass the extracted data
+    * calls its processors to generate more report data
+
+[x] add ratings from a csv file - post processor
+[x] add annual charges from a csv - post processor
+
+[x] add prices
+
+* file = Aviva_Pension_h-FL_Schroder_Tokyo_FP.pdf
+* funds_and_prices = Av Schroder Tokyo (0.98% Annual Management Charge),308
+* name = Schroder Tokyo
+
+[x] add fund performances
+
+[x] Roll TableCellLabelParser into NameParser
+
+
+[x] Add cumulative returns for 3 & 5 years calculated from annual performance percentages
+
+If the standard return over one period is R1 
+and the standard return over a second period is R2 
+then the cumulative return over both periods, Rc, is (1 + R1)(1 + R2) – 1 = Rc. 
+The cumulative return is sometimes referred to as the total return.
+
+R numbers are percentages as fractions (43% = 0.43)
+
+(1+0.169)*(1+-0.4259)*(1+0.4586) - 1 = 
+
+(1.169 * 1.4586 * 0.58) - 1 
+
+[] read pdf data into a class not a raw dict
+    [] use an enum to name columns
+
+[] extract report date from pdf
+
+[] Fund comparision
+    
+    * support various mechanisms to calculate value
+
+    * calculate the 'investment value' of each fund
+    * which factors 
+        * FT & MS ratings
+        * cumulative return over 5 & 3 years 
+        * risk weighs down a fund's investment value
+        * charges weigh down a fund's investment value
+        * fund_to_benchmark_average 
+
+    * how are they used to calculate a greater or lesser fund?
+    * must be at a point in time - load all Funds at the same point in time for comparision purposes
+    
+
+[] Persist fund data to a database
+    [] fund table captures static data ids, name, created date
+    [] schema captures attributes with effective dates
+    [] general purpose key value store with fund oid & effective date?
+        * store all values as text & convert to correct type on retrival?
+        * one table per attribute type with correct col type?
+
+
+[] Create services, APIs and web UI 
+    * upload pdfs 
+        * upload to S3 bucket (behind a service API)
+        * process from S3 events
+        * insert into db 
+        * 
+    * view reports
