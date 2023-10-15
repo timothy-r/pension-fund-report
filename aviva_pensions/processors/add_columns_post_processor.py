@@ -19,7 +19,7 @@ class AddColumnsPostProcessor(PostProcessorInterface):
     """
     def process(self, row: dict) -> dict:
 
-        if not len(self._source_data):
+        if len(self._source_data) == 0:
             self._source_data = self._data_provider.read_data()
 
         # if the key is not in the input then add empty columns

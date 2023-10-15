@@ -1,6 +1,8 @@
 from pathlib import Path
-import pdfplumber
 from typing import Callable, List
+
+import pdfplumber
+
 
 from aviva_pensions.services.plumber import Plumber
 
@@ -13,16 +15,16 @@ class PDFExtractorService:
     def __init__(self, plumber_factory:Callable[..., Plumber]) -> None:
         self._plumber_factory = plumber_factory
 
-    def read_directory(self, dir: str) -> None:
+    def read_directory(self, src_dir: str) -> None:
 
-        for file in self._get_dir_pdfs(dir=dir):
+        for file in self._get_dir_pdfs(src_dir=src_dir):
             yield self._read_pdf(file)
 
-    def _get_dir_pdfs(self, dir) -> list:
+    def _get_dir_pdfs(self, src_dir) -> list:
 
         result = []
 
-        p = Path(dir)
+        p = Path(src_dir)
         for file in p.iterdir():
             if file.is_file() and file.match('*.pdf'):
                 result.append(file)

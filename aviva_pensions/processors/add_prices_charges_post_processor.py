@@ -1,7 +1,4 @@
-import re
-
 from aviva_pensions.processors.post_processor_interface import PostProcessorInterface
-from aviva_pensions.parsers.name_parser import NameParser
 from aviva_pensions.readers.data_provider_interface import DataProviderInterface
 
 """
@@ -22,7 +19,7 @@ class AddPricesChargesPostProcessor(PostProcessorInterface):
     """
     def process(self, row: dict) -> dict:
 
-        if not len(self._source_data):
+        if len(self._source_data) == 0:
             self._source_data = self._data_provider.read_data()
 
         if not self._key_name in row:
