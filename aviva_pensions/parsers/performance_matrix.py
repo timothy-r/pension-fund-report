@@ -43,18 +43,12 @@ class PerformanceMatrix:
 
         if 'fund' in self._rows:
             return self._rows['fund'].annual_performance()
-        else:
-            return None
 
     def fund_cumulative_performance(self, term:int) -> dict:
         if 'fund' in self._rows:
             return self._rows['fund'].cumulative_performance(term=term)
-        else:
-            return None
 
     def _calculate_average(self, from_key:str, to_key:str) -> float:
 
         if from_key in self._rows and to_key in self._rows:
             return self._rows[from_key].average_difference(self._rows[to_key])
-        else:
-            return None
