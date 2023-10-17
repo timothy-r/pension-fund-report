@@ -11,6 +11,6 @@ class PostProcessorService:
     def process(self, data:dict) -> list:
 
         for p in self._post_processors:
-            data = p.process(row=data)
+            data = p.process(target_row=data)
 
         return data

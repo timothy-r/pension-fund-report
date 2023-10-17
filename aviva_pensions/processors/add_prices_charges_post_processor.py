@@ -17,19 +17,19 @@ class AddPricesChargesPostProcessor(PostProcessorInterface):
         similar to add_columns post processor
         can both classes be refactored to be the same?
     """
-    def process(self, row: dict) -> dict:
+    def process(self, target_row: dict) -> dict:
 
         if len(self._source_data) == 0:
             self._source_data = self._data_provider.read_data()
 
-        if not self._key_name in row:
-            print("key {} not found in {}".format(self._key_name, row))
+        if not self._key_name in target_row:
+            print("key {} not found in {}".format(self._key_name, target_row))
             for col in self._columns:
-                if not col in row:
-                    row[col] = ''
-            return row
+                if not col in target_row:
+                    target_row[col] = ''
+            return target_row
 
-        key = str(row[self._key_name])
+        key = str(target_row[self._key_name])
 
         if key in self._source_data:
 
@@ -40,13 +40,13 @@ class AddPricesChargesPostProcessor(PostProcessorInterface):
                 if col in data_row:
 
                     # don't overwrite cols with values
-                    if col in row:
-                        if row[col] == '':
-                            row[col] = data_row[col]
+                    if col in target_row:
+                        if target_row[col] == '':
+                            target_row[col] = data_row[col]
                     else:
-                        row[col] = data_row[col]
+                        target_row[col] = data_row[col]
 
         else:
             print("id '{}' not found in source data".format(key))
 
-        return row
+        return target_row

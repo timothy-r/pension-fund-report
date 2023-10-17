@@ -10,29 +10,29 @@ class PerformancePostProcessor(PostProcessorInterface):
     """
         Using the performance matrix generate averages
     """
-    def process(self, row: dict) -> dict:
+    def process(self, target_row: dict) -> dict:
 
         """ ensure these keys are set with defalu values """
-        row['fund_to_benchmark_ave'] = ''
-        row['fund_to_sector_ave'] = ''
+        target_row['fund_to_benchmark_ave'] = ''
+        target_row['fund_to_sector_ave'] = ''
         for key in self._year_keys:
-            row[key] = ''
-        row['cumulative_perf_5'] = ''
-        row['cumulative_perf_3'] = ''
+            target_row[key] = ''
+        target_row['cumulative_perf_5'] = ''
+        target_row['cumulative_perf_3'] = ''
 
-        if not 'performance' in row:
-            return row
+        if not 'performance' in target_row:
+            return target_row
 
-        performance_matrix:PerformanceMatrix = row['performance']
-        row.pop('performance')
+        performance_matrix:PerformanceMatrix = target_row['performance']
+        target_row.pop('performance')
 
         try:
-            row['fund_to_benchmark_ave'] = performance_matrix.fund_to_benchmark_average()
+            target_row['fund_to_benchmark_ave'] = performance_matrix.fund_to_benchmark_average()
         except:
             pass
 
         try:
-            row['fund_to_sector_ave'] = performance_matrix.fund_to_sector_average()
+            target_row['fund_to_sector_ave'] = performance_matrix.fund_to_sector_average()
         except:
             pass
 
@@ -42,18 +42,18 @@ class PerformancePostProcessor(PostProcessorInterface):
         try:
             annual_performance = performance_matrix.fund_annual_performance()
             for key in annual_performance.keys():
-                row[key] = annual_performance[key]['value']
+                target_row[key] = annual_performance[key]['value']
         except:
             pass
 
         try:
-            row['cumulative_perf_5'] = performance_matrix.fund_cumulative_performance(5)
+            target_row['cumulative_perf_5'] = performance_matrix.fund_cumulative_performance(5)
         except ValueError:
             pass
 
         try:
-            row['cumulative_perf_3'] = performance_matrix.fund_cumulative_performance(3)
+            target_row['cumulative_perf_3'] = performance_matrix.fund_cumulative_performance(3)
         except ValueError:
             pass
 
-        return row
+        return target_row

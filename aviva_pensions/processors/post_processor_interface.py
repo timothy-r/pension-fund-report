@@ -5,7 +5,7 @@ class PostProcessorInterface():
     """
 
     @abc.abstractmethod
-    def process(self, row:dict) -> dict:
+    def process(self, target_row:dict) -> dict:
         """ Method to perform the post processing
             takes a dict and returns the processed version of it
         """
