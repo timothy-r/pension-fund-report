@@ -3,6 +3,7 @@
 """
 
 import sys
+import logging
 from dependency_injector.wiring import Provide, inject
 
 from aviva_pensions.container import Container

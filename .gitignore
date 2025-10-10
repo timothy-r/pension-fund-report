@@ -4,3 +4,4 @@ Available Processes
 *.csv
 .DS_Store
 *.pyc
+*.venv
