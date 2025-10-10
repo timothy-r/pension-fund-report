@@ -3,10 +3,10 @@ import re
 from aviva_pensions.parsers.text_parser_interface import TextParserInterface
 
 class ReportDateParser(TextParserInterface):
-    
+
     def __init__(self) -> None:
         super().__init__()
-        
+
     def get_name(self) -> str:
         return 'date'
 
