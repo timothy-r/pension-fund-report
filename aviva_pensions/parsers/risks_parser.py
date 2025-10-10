@@ -6,6 +6,7 @@ class RisksParser(TextParserInterface):
 
     def __init__(self, names:list[str]) -> None:
         super().__init__()
+
         self.__risk_names = names
 
     def get_name(self) -> str:
@@ -14,6 +15,7 @@ class RisksParser(TextParserInterface):
     def get_values(self, text: str) -> dict:
 
         values = {}
+
         for name in self.__risk_names:
             result = re.search("{}Yes".format(name), text)
             if (result != None):

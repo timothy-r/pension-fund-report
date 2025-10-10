@@ -17,7 +17,7 @@ class PDFExtractorService:
         for file in self.__get_dir_pdfs(dir=dir):
             yield self.__read_pdf(file)
 
-    def __get_dir_pdfs(self, dir) -> list:
+    def __get_dir_pdfs(self, src_dir) -> list:
 
         result = []
 
