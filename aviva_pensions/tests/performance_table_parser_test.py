@@ -3,7 +3,7 @@ from unittest.mock import Mock
 from aviva_pensions.container import Container
 
 from aviva_pensions.parsers.performance_matrix import PerformanceMatrix
-
+from aviva_pensions.parsers.performance_table_parser import PerformanceTableParser
 def make_fake_method():
     def fake_method(param):
         return param
@@ -23,18 +23,27 @@ class PerformanceTableParserTest(unittest.TestCase):
         table.append(row_2)
 
         container = Container()
-        perf_table_parser = container.perf_table_parser()
 
         # simplify the test by getting the name parser to echo back its input
-        name_parser = Mock()
-        name_parser.parse_label = make_fake_method()
-        perf_table_parser._name_parser = name_parser
+        mock_name_parser = Mock()
+        mock_name_parser.parse_label = make_fake_method()
+        container.name_parser = mock_name_parser
+
+        # perf_table_parser.__name_parser = name_parser
+
+        # perf_table_parser = container.perf_table_parser()
+
+        perf_table_parser = PerformanceTableParser(
+            name_parser=mock_name_parser,
+            perf_matrix_factory=container.perf_matrix_factory.provider(),
+            perf_matrix_row_factory=container.perf_matrix_row_factory.provider()
+        )
 
         perf_table_parser.read_table(num=0, table=table)
 
         data = perf_table_parser.get_values()
 
-        matrix:PerformanceMatrix =  data['performance']
+        matrix:PerformanceMatrix = data['performance']
 
         self.assertIsInstance(matrix, PerformanceMatrix)
 

@@ -42,6 +42,10 @@ class NameParser:
 
     def parse_label(self, label:str) -> str:
 
+        print(f"parse_label 1: {label}")
+
+        return label
+
         words = label.split()
 
         result = []
@@ -52,4 +56,5 @@ class NameParser:
 
         result = ' '.join(result)
 
+        print(f"parse_label 2: {result}")
         return result
