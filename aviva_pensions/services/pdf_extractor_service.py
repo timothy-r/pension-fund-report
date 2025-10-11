@@ -1,6 +1,8 @@
 from pathlib import Path
 from typing import Callable, List
 
+import pdfplumber
+
 from aviva_pensions.services.pdf_reader import PDFReader
 
 """
@@ -12,9 +14,9 @@ class PDFExtractorService:
     def __init__(self, plumber_factory:Callable[..., PDFReader]) -> None:
         self.__plumber_factory = plumber_factory
 
-    def read_directory(self, dir: str) -> None:
+    def read_directory(self, dir: str):
 
-        for file in self.__get_dir_pdfs(dir=dir):
+        for file in self.__get_dir_pdfs(src_dir=dir):
             yield self.__read_pdf(file)
 
     def __get_dir_pdfs(self, src_dir) -> list:

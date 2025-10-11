@@ -3,7 +3,7 @@ from unittest.mock import Mock
 from aviva_pensions.container import Container
 
 from aviva_pensions.parsers.performance_matrix import PerformanceMatrix
-
+from aviva_pensions.parsers.performance_table_parser import PerformanceTableParser
 def make_fake_method():
     def fake_method(param):
         return param
@@ -26,7 +26,7 @@ class PerformanceTableParserTest(unittest.TestCase):
 
         # simplify the test by getting the name parser to echo back its input
         mock_name_parser = Mock()
-        mock_name_parser.parse_label = makeFakeMethod()
+        mock_name_parser.parse_label = make_fake_method()
         container.name_parser = mock_name_parser
 
         # perf_table_parser.__name_parser = name_parser
