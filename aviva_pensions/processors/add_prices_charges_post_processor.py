@@ -29,9 +29,9 @@ class AddPricesChargesPostProcessor(PostProcessorInterface):
                     row[col] = ''
             return row
 
-        id = str(row[self._key_name])
+        key = str(row[self._key_name])
 
-        if id in self._source_data:
+        if key in self._source_data:
 
             source_data_row = self._source_data[id]
 
@@ -47,6 +47,6 @@ class AddPricesChargesPostProcessor(PostProcessorInterface):
                         row[col] = source_data_row[col]
 
         else:
-            print("id '{}' not found in source data".format(id))
+            print("id '{}' not found in source data".format(key))
 
         return row

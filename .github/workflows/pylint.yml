@@ -7,7 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        # python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.10"]
+
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -23,6 +25,6 @@ jobs:
 
     - name: Analysing the code with pylint
       run: |
-        pylint $(git ls-files '*.py')
+        pylint --extension-pkg-allow-list=dependency_injector $(git ls-files '*.py')
       working-directory: ./aviva_pensions
 

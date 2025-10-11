@@ -34,8 +34,8 @@ class AddColumnsPostProcessor(PostProcessorInterface):
         id = str(row[self.__key_name])
 
         # remove leading 0s from the ids
-        if id[0] == '0':
-            id = str(int(id))
+        if key[0] == '0':
+            key = str(int(key))
 
         if id in self.__source_data:
 
@@ -53,4 +53,11 @@ class AddColumnsPostProcessor(PostProcessorInterface):
         else:
             print("id {}\n not found in {}".format(id, self.__source_data.keys()))
 
+        return row
+
+    def _add_empty_cols(self, row:dict) -> dict:
+        """ fill out the parameter dict with all the configured col names and empty values
+        """
+        for col in self._columns:
+            row[col] = ''
         return row
