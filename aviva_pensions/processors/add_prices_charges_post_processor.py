@@ -33,7 +33,7 @@ class AddPricesChargesPostProcessor(PostProcessorInterface):
 
         if key in self._source_data:
 
-            source_data_row = self._source_data[id]
+            source_data_row = self._source_data[key]
 
             for col in self._columns:
 

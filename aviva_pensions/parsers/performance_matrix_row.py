@@ -55,7 +55,11 @@ class PerformanceMatrixRow:
 
         total = 1
         for i in range(0, term):
-            value = 1 + (self._data[i]['value']/100)
+            v = self._data[i]['value']
+            if not v:
+                raise ValueError()
+
+            value = 1 + (v/100)
             total *= value
 
         return round((total - 1) * 100, 2)
