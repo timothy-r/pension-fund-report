@@ -64,6 +64,8 @@ class AddColumnsPostProcessorTest(unittest.TestCase):
         row = {'SEDOL':'0123456'}
         results = _processor.process(row=row)
 
+        print(f"results: {results}")
+
         self.assertTrue(4 == len(results))
         self.assertTrue('0123456' == results['SEDOL'])
         self.assertTrue('' == results['Charge'])
